@@ -17,3 +17,8 @@ class Post(models.Model):
     image = models.CharField(max_length=100)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
+
+
+# Category model
+class Category(models.Model):
+    category_name = models.CharField(max_length=100)
