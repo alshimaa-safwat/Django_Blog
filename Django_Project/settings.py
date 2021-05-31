@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Blog',
+    'posts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,7 +82,7 @@ DATABASES = {
         'NAME': 'blog',
         'USER': 'root',
         'PASSWORD': ''
-
+       
     }
 }
 
