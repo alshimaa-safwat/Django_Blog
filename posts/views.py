@@ -18,7 +18,6 @@ def addComment(request,postid): #the worst function i had done shitty code i kno
 		mptrn= r"^[\S][\S ]+$"
 		result = re.match(mptrn, con)
 		if (result):
-			#]
 			words =BadWord.objects.all()
 			for word in words:
 				rep=""
