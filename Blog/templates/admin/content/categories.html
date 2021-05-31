@@ -6,18 +6,18 @@
     <thead>
     <tr>
         <th scope="col">Category Name</th>
-        <th><a href="" class="btn btn-info"><i class="fa fa-plus"></i>
+        <th><a href="new/" class="btn btn-info"><i class="fa fa-plus"></i>
             <strong>Category</strong></a>
     </tr>
     </thead>
 
     <tbody>
-    {%for category in all_categories %}
+    {% for category in categories %}
     <tr>
         <td>{{category.name}}</td>
         <td>
-            <a href="" class="btn btn-success"><i class="far fa-edit">Edit</i></a>
-            <a href="" class="btn btn-danger"><i class="far fa-trash-alt"> Delete</i></a>
+            <a href="edit/{{category.id}}" class="btn btn-success"><i class="far fa-edit">Edit</i></a>
+            <a href="delete/{{category.id}}" class="btn btn-danger"><i class="far fa-trash-alt"> Delete</i></a>
         </td>
     </tr>
     {%endfor%}
@@ -25,5 +25,3 @@
 </table>
 
 {% endblock %}
-
-    
