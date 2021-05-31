@@ -52,3 +52,20 @@ def deletecomment(request, comid):
     return HttpResponseRedirect('/posts/'+str(postid))
 
 
+# get like data function
+def getLikeData(request):
+	postId = request.GET['postId']
+	userId = request.user.id
+	print(userId)
+	reactState = request.GET['reactStatex']
+	refresh = request.GET['refreshx']
+	reaction, created = Reaction.objects.get_or_create(post_id=postId, user_id=userId)
+	if(refresh=='0'):
+		reaction.react=reactState
+		reaction.save()
+	else:
+		pass
+	likeReact = Reaction.objects.filter(post_id=postId, react="like").count()
+	dislikeReact = Reaction.objects.filter(post_id=postId, react="dislike").count()
+
+	return HttpResponse(json.dumps({'reactType':reaction.react, 'likeReact':likeReact, 'dislikeReact':dislikeReact}))
