@@ -35,7 +35,7 @@ def edit_category(request, id):
         category_form = createCategoryForm(request.POST, instance=category)
         if category_form.is_valid():
             category_form.save()
-            return HttpResponseRedirect("/ourBlog/categories")
+            return HttpResponseRedirect("/blogs/categories")
     else:
         category_form = createCategoryForm(instance=category)
         context = {'category_form': category_form}
