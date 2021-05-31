@@ -4,6 +4,9 @@ from . import views
 
 urlpatterns = [
     path('<postid>/addcomment',views.addComment),
-    path('<comid>/deletecomment',views.deletecomment)
+    path('<comid>/deletecomment',views.deletecomment),
+    url(r'^about/$', views.about),
+	path('listcat/<catid>', views.listCat),
+    url(r'^like$', views.getLikeData),
     
 ]
