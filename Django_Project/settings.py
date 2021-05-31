@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+
 # import pymysql
 
 # pymysql.install_as_MySQLdb()
@@ -80,8 +81,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
 
         'NAME': 'blog',
-        'USER' : 'django',
-        'PASSWORD': ''
+        'USER': 'root',
+        'PASSWORD': 'root'
 
     }
 }
