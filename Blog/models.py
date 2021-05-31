@@ -1,13 +1,7 @@
-from django.db import models
+# Create your models here.
 from django.contrib.auth.models import User
+from django.db import models
 
 
-# Category model
-class Category(models.Model):
-    category_name = models.CharField(max_length=100)
-
-
-
-
-
-
+class ExtendedUser():
+    pass

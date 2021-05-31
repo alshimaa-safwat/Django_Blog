@@ -1,14 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from posts.models import Category
-
-
-
-# Create your views here.
-
-# for testing
-# def index(request):
-#     return render(request, 'layouts/dashboard/base.html')
+from .forms import createCategoryForm
 
 
 def get_categories(request):
@@ -16,6 +9,24 @@ def get_categories(request):
     main_content_var = "Categories"
     context = {'categories':categories,'mainContentVar': main_content_var}
     return render(request, 'admin/content/categories.html', context)
+
+
+def add_category(request):
+    if request.method == "POST":
+        category_form = createCategoryForm(request.POST)
+        if category_form.is_valid():
+            category_form.save()
+            return HttpResponseRedirect("/blogs/categories")
+    else:
+        category_form = createCategoryForm()
+        context = {'category_form': category_form}
+        return render(request, 'admin/content/createCategory.html', context) 
+        
+
+def delete_category(request, id):
+    category = Category.objects.get(id=id)
+    category.delete()
+    return HttpResponseRedirect("/blogs/categories")             
 
 
 # def get_posts(request):
@@ -31,16 +42,7 @@ def get_categories(request):
 #     return HttpResponseRedirect("/ourBlog/posts")
 
 
-# def add_category(request):
-#     if request.method == "POST":
-#         category_form = createCategoryForm(request.POST)
-#         if category_form.is_valid():
-#             category_form.save()
-#             return HttpResponseRedirect("/ourBlog/categories")
-#     else:
-#         category_form = createCategoryForm()
-#         context = {'category_form': category_form}
-#         return render(request, 'admin/content/createCategory.html', context)
+
 
 
 # def edit_category(request, id):
@@ -56,8 +58,5 @@ def get_categories(request):
 #         return render(request, 'admin/content/createCategory.html', context)
 
 
-# def delete_category(request, id):
-#     category = Category.objects.get(id=id)
-#     category.delete()
-#     return HttpResponseRedirect("/ourBlog/categories")       
+     
 

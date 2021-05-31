@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from Posts.models import Category
-from .forms import createCategoryForm
+from posts.models import Category
 
 class createCategoryForm(forms.ModelForm):
     class Meta:
