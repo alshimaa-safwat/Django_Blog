@@ -26,7 +26,20 @@ def add_category(request):
 def delete_category(request, id):
     category = Category.objects.get(id=id)
     category.delete()
-    return HttpResponseRedirect("/blogs/categories")             
+    return HttpResponseRedirect("/blogs/categories")  
+
+
+def edit_category(request, id):
+    category = Category.objects.get(id=id)
+    if request.method == "POST":
+        category_form = createCategoryForm(request.POST, instance=category)
+        if category_form.is_valid():
+            category_form.save()
+            return HttpResponseRedirect("/ourBlog/categories")
+    else:
+        category_form = createCategoryForm(instance=category)
+        context = {'category_form': category_form}
+        return render(request, 'admin/content/createCategory.html', context)               
 
 
 # def get_posts(request):
@@ -45,17 +58,7 @@ def delete_category(request, id):
 
 
 
-# def edit_category(request, id):
-#     category = Category.objects.get(id=id)
-#     if request.method == "POST":
-#         category_form = createCategoryForm(request.POST, instance=category)
-#         if category_form.is_valid():
-#             category_form.save()
-#             return HttpResponseRedirect("/ourBlog/categories")
-#     else:
-#         category_form = createCategoryForm(instance=category)
-#         context = {'category_form': category_form}
-#         return render(request, 'admin/content/createCategory.html', context)
+
 
 
      
