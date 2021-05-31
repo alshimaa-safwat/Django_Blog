@@ -5,7 +5,3 @@ from django.db import models
 
 class ExtendedUser():
     pass
-
-
-
-
