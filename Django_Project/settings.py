@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Blog',
+    'posts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,10 +79,9 @@ WSGI_APPLICATION = 'Django_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-
         'NAME': 'blog',
-        'USER' : 'django',
-        'PASSWORD': ''
+        'USER': 'root',
+        'PASSWORD': '1234'
 
     }
 }

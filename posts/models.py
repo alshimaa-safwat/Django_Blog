@@ -2,7 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
+class ForrbiddenWord(models.Model):
+	word =models.CharField(max_length=10)
+
+	def __str__(self):
+		return self.word
+
+ 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Tag(models.Model):
@@ -10,14 +21,6 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
 
 
 class Post(models.Model):
@@ -35,43 +38,3 @@ class Post(models.Model):
 
     def excerpt(self):
         return self.body[:150] + '...'
-
-
-class Comments(models.Model):
-	post_name = models.ForeignKey(Post, on_delete=models.CASCADE)
-	user_name = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-	content = models.CharField(max_length=200)
-	date=models.DateTimeField(auto_now_add=True)
-
-	def __str__(self):
-		return '%s %s' % (self.user_name, self.post_name)
-
-
-
-class Reply(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    comment = models.ForeignKey(Comments,on_delete=models.CASCADE)
-    content = models.CharField(max_length=200)
-    date=models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return '%s %s' % (self.user, self.comment)
-
-
-
-
-class Subscribe(models.Model):
-    user =models.ForeignKey(User, on_delete=models.DO_NOTHING, default=1)
-    cat =models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '%s %s' % (self.user, self.cat)
-
-
-class ForrbiddenWord(models.Model):
-    word =models.CharField(max_length=10)
-
-    def __str__(self):
-        return self.word
-
- 
