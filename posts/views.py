@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post, Category, Comment, Reply, Reaction, ForbiddenWord
 import json
 import re
-from .forms import postForm
+from .forms import PostForm
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 
