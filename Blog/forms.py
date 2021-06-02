@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from posts.models import Category,Post
 
-class CreateCategoryForm(forms.ModelForm):
-
 # new user form
 class CreateUserForm(forms.ModelForm):
     class Meta:
@@ -36,4 +34,4 @@ class CreatePostForm(forms.ModelForm):
             'body': forms.TextInput(attrs={'class': 'form-control'}),
         } 
     
-        }
+        
