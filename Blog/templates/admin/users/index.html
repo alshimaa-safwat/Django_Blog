@@ -1,4 +1,4 @@
-{% extends "admin/adminlte.html" %}
+    {% extends "admin/adminlte.html" %}
 
 {% load static %}
 {% load i18n static %}
@@ -30,17 +30,17 @@
         <td>{{ user.last_name }}</td>
         {% if user.is_superuser %}
             <td>
-                <a href="revoke/{{ user.get_username }}" class="btn btn-info">Make User</a>
+                <a href="{% url 'dashboard.users.downgrade' user.id %}" class="btn btn-info">Make User</a>
             </td>
         {% else %}
             <td>
-                <a href="grant/{{ user.get_username }}" class="btn btn-outline-info">Make Admin</a>
+                <a href="{% url 'dashboard.users.upgrade' user.id %}" class="btn btn-outline-info">Make Admin</a>
                 <a href="{% url 'dashboard.users.edit' user.id %}" class="btn btn-outline-warning"><i class="far fa-edit"></i></a>
                 <a href="{% url 'dashboard.users.delete' user.id %}" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
                 {% if user.is_active is True %}
-                    <a href="block/{{ user.get_username }}" class="btn btn-outline-primary"><i class="fas fa-lock"></i></a>
+                    <a href="{% url 'dashboard.users.lock' user.id %}" class="btn btn-outline-primary"><i class="fas fa-lock"></i></a>
                 {% else %}
-                    <a href="unblock/{{ user.get_username }}" class="btn btn-outline-info"><i class="fas fa-unlock"></i></a>
+                    <a href="{% url 'dashboard.users.unlock' user.id %}" class="btn btn-outline-info"><i class="fas fa-unlock"></i></a>
                 {% endif %}
             </td>
         {% endif %}

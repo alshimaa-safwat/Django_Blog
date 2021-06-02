@@ -57,13 +57,13 @@ class Reply(models.Model):
 
 class Subscribe(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=1)
-    cat = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '%s %s' % (self.user, self.cat)
+        return '%s %s' % (self.user, self.category)
 
 
-class ForrbiddenWord(models.Model):
+class ForbiddenWord(models.Model):
     word = models.CharField(max_length=10)
 
     def __str__(self):
