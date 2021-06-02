@@ -14,7 +14,7 @@ class Reply(models.Model):
 
 class Subscribe(models.Model):
 	user =models.ForeignKey(User, on_delete=models.DO_NOTHING, default=1)
-	cat =models.ForeignKey(Category, on_delete=models.CASCADE)
+	Category =models.ForeignKey(Category, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return '%s %s' % (self.user, self.cat)
