@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/new/', views.create_user, name="dashboard.users.new"),
     path('users/<id>/edit', views.edit_user, name="dashboard.users.edit"),
     path('users/<id>/update', views.update_user, name="dashboard.users.update"),
+    path('users/<id>/delete', views.delete_user, name="dashboard.users.delete"),
 
     path('categories/', views.get_categories),
     path('categories/edit/<id>', views.edit_category),

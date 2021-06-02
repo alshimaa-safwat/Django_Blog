@@ -56,6 +56,15 @@ def update_user(request, id):
         return HttpResponseRedirect("/dashboard/users")
 
 
+def delete_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+        user.delete()
+        return HttpResponseRedirect("/dashboard/users")
+
+    except User.DoesNotExist:
+        return HttpResponseRedirect("/dashboard/users")
+
 
 def get_categories(request):
     categories = Category.objects.all()
