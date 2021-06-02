@@ -52,7 +52,7 @@ var Lightbox = (function ($) {
    	 _$element: null -> the <a> element currently being displayed
     _$modal: The bootstrap modal generated
        _$modalDialog: The .modal-dialog
-       _$modalContent: The .modal-content
+       _$modalContent: The .modal-includes
        _$modalBody: The .modal-body
        _$modalHeader: The .modal-header
        _$modalFooter: The .modal-footer
@@ -65,7 +65,7 @@ var Lightbox = (function ($) {
     _galleryIndex: The current index of the _$galleryItems being shown
    	 _config: {} the options for the modal
     _modalId: unique id for the current lightbox
-    _padding / _border: CSS properties for the modal container; these are used to calculate the available space for the content
+    _padding / _border: CSS properties for the modal container; these are used to calculate the available space for the includes
    	 */
 
 			get: function get() {
@@ -102,12 +102,12 @@ var Lightbox = (function ($) {
 			var header = '<div class="modal-header' + (this._config.title || this._config.alwaysShowClose ? '' : ' hide') + '">' + (this._isBootstrap3 ? btn + h4 : h4 + btn) + '</div>';
 			var footer = '<div class="modal-footer' + (this._config.footer ? '' : ' hide') + '">' + (this._config.footer || "&nbsp;") + '</div>';
 			var body = '<div class="modal-body"><div class="ekko-lightbox-container"><div class="ekko-lightbox-item fade in show"></div><div class="ekko-lightbox-item fade"></div></div></div>';
-			var dialog = '<div class="modal-dialog" role="document"><div class="modal-content">' + header + body + footer + '</div></div>';
+			var dialog = '<div class="modal-dialog" role="document"><div class="modal-includes">' + header + body + footer + '</div></div>';
 			$(this._config.doc.body).append('<div id="' + this._modalId + '" class="ekko-lightbox modal fade" tabindex="-1" tabindex="-1" role="dialog" aria-hidden="true">' + dialog + '</div>');
 
 			this._$modal = $('#' + this._modalId, this._config.doc);
 			this._$modalDialog = this._$modal.find('.modal-dialog').first();
-			this._$modalContent = this._$modal.find('.modal-content').first();
+			this._$modalContent = this._$modal.find('.modal-includes').first();
 			this._$modalBody = this._$modal.find('.modal-body').first();
 			this._$modalHeader = this._$modal.find('.modal-header').first();
 			this._$modalFooter = this._$modal.find('.modal-footer').first();
@@ -424,7 +424,7 @@ var Lightbox = (function ($) {
 		}, {
 			key: '_showInstagramVideo',
 			value: function _showInstagramVideo(id, $containerForElement) {
-				// instagram load their content into iframe's so this can be put straight into the element
+				// instagram load their includes into iframe's so this can be put straight into the element
 				var width = this._$element.data('width') || 612;
 				var height = width + 80;
 				id = id.substr(-1) !== '/' ? id + '/' : id; // ensure id has trailing slash
@@ -439,7 +439,7 @@ var Lightbox = (function ($) {
 		}, {
 			key: '_showVideoIframe',
 			value: function _showVideoIframe(url, width, height, $containerForElement) {
-				// should be used for videos only. for remote content use loadRemoteContent (data-type=url)
+				// should be used for videos only. for remote includes use loadRemoteContent (data-type=url)
 				height = height || width; // default to square
 				$containerForElement.html('<div class="embed-responsive embed-responsive-16by9"><iframe width="' + width + '" height="' + height + '" src="' + url + '" frameborder="0" allowfullscreen class="embed-responsive-item"></iframe></div>');
 				this._resize(width, height);
@@ -451,7 +451,7 @@ var Lightbox = (function ($) {
 		}, {
 			key: '_showHtml5Video',
 			value: function _showHtml5Video(url, $containerForElement) {
-				// should be used for videos only. for remote content use loadRemoteContent (data-type=url)
+				// should be used for videos only. for remote includes use loadRemoteContent (data-type=url)
 				var width = this._$element.data('width') || 560;
 				var height = this._$element.data('height') || width / (560 / 315);
 				$containerForElement.html('<div class="embed-responsive embed-responsive-16by9"><video width="' + width + '" height="' + height + '" src="' + url + '" preload="auto" autoplay controls class="embed-responsive-item"></video></div>');
@@ -483,7 +483,7 @@ var Lightbox = (function ($) {
 					this._config.onContentLoaded.call(this);
 				}
 
-				if (this._$modalArrows) //hide the arrows when remote content
+				if (this._$modalArrows) //hide the arrows when remote includes
 					this._$modalArrows.css('display', 'none');
 
 				this._resize(width, height);

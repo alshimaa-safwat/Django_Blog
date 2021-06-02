@@ -6511,17 +6511,17 @@ Docs & License: https://fullcalendar.io/
     StandardTheme.prototype.classes = {
         widget: 'fc-unthemed',
         widgetHeader: 'fc-widget-header',
-        widgetContent: 'fc-widget-content',
+        widgetContent: 'fc-widget-includes',
         buttonGroup: 'fc-button-group',
         button: 'fc-button fc-button-primary',
         buttonActive: 'fc-button-active',
         popoverHeader: 'fc-widget-header',
-        popoverContent: 'fc-widget-content',
+        popoverContent: 'fc-widget-includes',
         // day grid
         headerRow: 'fc-widget-header',
-        dayRow: 'fc-widget-content',
+        dayRow: 'fc-widget-includes',
         // list view
-        listView: 'fc-widget-content'
+        listView: 'fc-widget-includes'
     };
     StandardTheme.prototype.baseIconClass = 'fc-icon';
     StandardTheme.prototype.iconClasses = {

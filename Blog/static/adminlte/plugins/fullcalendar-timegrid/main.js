@@ -159,7 +159,7 @@ Docs & License: https://fullcalendar.io/
                     ' style="' + skinCss + '"' :
                     '') +
                 '>' +
-                '<div class="fc-content">' +
+                '<div class="fc-includes">' +
                 (timeText ?
                     '<div class="fc-time"' +
                         ' data-start="' + core.htmlEscape(startTimeText) + '"' +
@@ -650,14 +650,14 @@ Docs & License: https://fullcalendar.io/
         };
         /* Content Skeleton
         ------------------------------------------------------------------------------------------------------------------*/
-        // Renders the DOM that the view's content will live in
+        // Renders the DOM that the view's includes will live in
         TimeGrid.prototype.renderContentSkeleton = function () {
             var parts = [];
             var skeletonEl;
             parts.push(this.renderProps.renderIntroHtml());
             for (var i = 0; i < this.colCnt; i++) {
                 parts.push('<td>' +
-                    '<div class="fc-content-col">' +
+                    '<div class="fc-includes-col">' +
                     '<div class="fc-event-container fc-mirror-container"></div>' +
                     '<div class="fc-event-container"></div>' +
                     '<div class="fc-highlight-container"></div>' +
@@ -669,12 +669,12 @@ Docs & License: https://fullcalendar.io/
             if (this.isRtl) {
                 parts.reverse();
             }
-            skeletonEl = this.contentSkeletonEl = core.htmlToElement('<div class="fc-content-skeleton">' +
+            skeletonEl = this.contentSkeletonEl = core.htmlToElement('<div class="fc-includes-skeleton">' +
                 '<table>' +
                 '<tr>' + parts.join('') + '</tr>' +
                 '</table>' +
                 '</div>');
-            this.colContainerEls = core.findElements(skeletonEl, '.fc-content-col');
+            this.colContainerEls = core.findElements(skeletonEl, '.fc-includes-col');
             this.mirrorContainerEls = core.findElements(skeletonEl, '.fc-mirror-container');
             this.fgContainerEls = core.findElements(skeletonEl, '.fc-event-container:not(.fc-mirror-container)');
             this.bgContainerEls = core.findElements(skeletonEl, '.fc-bgevent-container');
@@ -989,7 +989,7 @@ Docs & License: https://fullcalendar.io/
                 return '<td class="fc-axis ' + theme.getClass('widgetContent') + '" ' + _this.axisStyleAttr() + '></td>';
             };
             // Generates the HTML that goes before all other types of cells.
-            // Affects content-skeleton, mirror-skeleton, highlight-skeleton for both the time-grid and day-grid.
+            // Affects includes-skeleton, mirror-skeleton, highlight-skeleton for both the time-grid and day-grid.
             _this.renderTimeGridIntroHtml = function () {
                 return '<td class="fc-axis" ' + _this.axisStyleAttr() + '></td>';
             };
@@ -1006,7 +1006,7 @@ Docs & License: https://fullcalendar.io/
                     '</td>';
             };
             // Generates the HTML that goes before all other types of cells.
-            // Affects content-skeleton, mirror-skeleton, highlight-skeleton for both the time-grid and day-grid.
+            // Affects includes-skeleton, mirror-skeleton, highlight-skeleton for both the time-grid and day-grid.
             _this.renderDayGridIntroHtml = function () {
                 return '<td class="fc-axis" ' + _this.axisStyleAttr() + '></td>';
             };

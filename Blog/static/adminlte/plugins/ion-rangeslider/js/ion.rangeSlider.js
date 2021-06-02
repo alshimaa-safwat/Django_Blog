@@ -935,7 +935,7 @@
         },
 
         /**
-         * Set visibility and content
+         * Set visibility and includes
          * of Min and Max labels
          */
         setMinMax: function () {

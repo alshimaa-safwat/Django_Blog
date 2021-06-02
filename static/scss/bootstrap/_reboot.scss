@@ -10,11 +10,11 @@
 
 // Document
 //
-// 1. Change from `box-sizing: content-box` so that `width` is not affected by `padding` or `border`.
+// 1. Change from `box-sizing: includes-box` so that `width` is not affected by `padding` or `border`.
 // 2. Change the default font family in all browsers.
 // 3. Correct the line height in all browsers.
 // 4. Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.
-// 5. Setting @viewport causes scrollbars to overlap content in IE11 and Edge, so
+// 5. Setting @viewport causes scrollbars to overlap includes in IE11 and Edge, so
 //    we force a non-overlapping, non-auto-hiding scrollbar to counteract.
 // 6. Change the default tap highlight to be completely transparent in iOS.
 
@@ -245,9 +245,9 @@ pre {
   margin-top: 0;
   // Reset browser default of `1em` to use `rem`s
   margin-bottom: 1rem;
-  // Don't allow content to break outside
+  // Don't allow includes to break outside
   overflow: auto;
-  // We have @viewport set which causes scrollbars to overlap content in IE11 and Edge, so
+  // We have @viewport set which causes scrollbars to overlap includes in IE11 and Edge, so
   // we force a non-overlapping, non-auto-hiding scrollbar to counteract.
   -ms-overflow-style: scrollbar;
 }
@@ -264,7 +264,7 @@ figure {
 
 
 //
-// Images and content
+// Images and includes
 //
 
 img {
@@ -395,7 +395,7 @@ textarea {
 }
 
 fieldset {
-  // Browsers set a default `min-width: min-content;` on fieldsets,
+  // Browsers set a default `min-width: min-includes;` on fieldsets,
   // unlike e.g. `<div>`s, which have `min-width: 0;` by default.
   // So we reset that to ensure fieldsets behave more like a standard block element.
   // See https://github.com/twbs/bootstrap/issues/12359
