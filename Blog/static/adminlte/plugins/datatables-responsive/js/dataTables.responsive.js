@@ -1077,7 +1077,7 @@ Responsive.display = {
 
 				var modal = $('<div class="dtr-modal"/>')
 					.append( $('<div class="dtr-modal-display"/>')
-						.append( $('<div class="dtr-modal-content"/>')
+						.append( $('<div class="dtr-modal-includes"/>')
 							.append( render() )
 						)
 						.append( $('<div class="dtr-modal-close">&times;</div>' )
@@ -1102,13 +1102,13 @@ Responsive.display = {
 				} );
 			}
 			else {
-				$('div.dtr-modal-content')
+				$('div.dtr-modal-includes')
 					.empty()
 					.append( render() );
 			}
 
 			if ( options && options.header ) {
-				$('div.dtr-modal-content').prepend(
+				$('div.dtr-modal-includes').prepend(
 					'<h2>'+options.header( row )+'</h2>'
 				);
 			}

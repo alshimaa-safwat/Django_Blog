@@ -77,5 +77,3 @@ class ForrbiddenWord(models.Model):
 #
 #     def __str__(self):
 #         return '%s %s %s' % (self.post, self.user, self.react)
-
-    

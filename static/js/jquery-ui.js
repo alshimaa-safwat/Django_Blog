@@ -907,7 +907,7 @@ var widgetsMouse = $.widget( "ui.mouse", {
 
 		// Only check for mouseups outside the document if you've moved inside the document
 		// at least once. This prevents the firing of mouseup in the case of IE<9, which will
-		// fire a mousemove event if content is placed under the cursor. See #7778
+		// fire a mousemove event if includes is placed under the cursor. See #7778
 		// Support: IE <9
 		if ( this._mouseMoved ) {
 
@@ -1058,7 +1058,7 @@ var widgetsSlider = $.widget( "ui.slider", $.ui.mouse, {
 		this._calculateNewMax();
 
 		this._addClass( "ui-slider ui-slider-" + this.orientation,
-			"ui-widget ui-widget-content" );
+			"ui-widget ui-widget-includes" );
 
 		this._refresh();
 

@@ -83,11 +83,11 @@ Docs & License: https://fullcalendar.io/
         return DayGridDateProfileGenerator;
     }(core.DateProfileGenerator));
 
-    /* A rectangular panel that is absolutely positioned over other content
+    /* A rectangular panel that is absolutely positioned over other includes
     ------------------------------------------------------------------------------------------------------------------------
     Options:
       - className (string)
-      - content (HTML string, element, or element array)
+      - includes (HTML string, element, or element array)
       - parentEl
       - top
       - left
@@ -130,7 +130,7 @@ Docs & License: https://fullcalendar.io/
                 this.trigger('hide');
             }
         };
-        // Creates `this.el` and renders content inside of it
+        // Creates `this.el` and renders includes inside of it
         Popover.prototype.render = function () {
             var _this = this;
             var options = this.options;
@@ -247,7 +247,7 @@ Docs & License: https://fullcalendar.io/
                     ' style="' + skinCss + '"' :
                     '') +
                 '>' +
-                '<div class="fc-content">' +
+                '<div class="fc-includes">' +
                 (options.dir === 'rtl' ?
                     titleHtml + ' ' + timeHtml : // put a natural space in between
                     timeHtml + ' ' + titleHtml //
@@ -288,9 +288,9 @@ Docs & License: https://fullcalendar.io/
         // Renders the given foreground event segments onto the grid
         DayGridEventRenderer.prototype.attachSegs = function (segs, mirrorInfo) {
             var rowStructs = this.rowStructs = this.renderSegRows(segs);
-            // append to each row's content skeleton
+            // append to each row's includes skeleton
             this.dayGrid.rowEls.forEach(function (rowNode, i) {
-                rowNode.querySelector('.fc-content-skeleton > table').appendChild(rowStructs[i].tbodyEl);
+                rowNode.querySelector('.fc-includes-skeleton > table').appendChild(rowStructs[i].tbodyEl);
             });
             // removes the "more.." events popover
             if (!mirrorInfo) {
@@ -306,7 +306,7 @@ Docs & License: https://fullcalendar.io/
             }
             this.rowStructs = null;
         };
-        // Uses the given events array to generate <tbody> elements that should be appended to each row's content skeleton.
+        // Uses the given events array to generate <tbody> elements that should be appended to each row's includes skeleton.
         // Returns an array of rowStruct objects (see the bottom of `renderSegRow`).
         // PRECONDITION: each segment shoud already have a rendered and assigned `.el`
         DayGridEventRenderer.prototype.renderSegRows = function (segs) {
@@ -494,9 +494,9 @@ Docs & License: https://fullcalendar.io/
                     skeletonTopEl = sourceSeg.el;
                 }
                 else {
-                    skeletonTopEl = rowNode.querySelector('.fc-content-skeleton tbody');
+                    skeletonTopEl = rowNode.querySelector('.fc-includes-skeleton tbody');
                     if (!skeletonTopEl) { // when no events
-                        skeletonTopEl = rowNode.querySelector('.fc-content-skeleton table');
+                        skeletonTopEl = rowNode.querySelector('.fc-includes-skeleton table');
                     }
                 }
                 skeletonTop = skeletonTopEl.getBoundingClientRect().top -
@@ -829,7 +829,7 @@ Docs & License: https://fullcalendar.io/
                 }) +
                 '</table>' +
                 '</div>' +
-                '<div class="fc-content-skeleton">' +
+                '<div class="fc-includes-skeleton">' +
                 '<table>' +
                 (this.getIsNumbersVisible() ?
                     '<thead>' +
@@ -872,7 +872,7 @@ Docs & License: https://fullcalendar.io/
             }
             return htmls.join('');
         };
-        // Generates the HTML for the <td>s of the "number" row in the DayGrid's content skeleton.
+        // Generates the HTML for the <td>s of the "number" row in the DayGrid's includes skeleton.
         // The number row will only exist if either day numbers or week numbers are turned on.
         DayGrid.prototype.renderNumberCellHtml = function (date) {
             var _a = this, view = _a.view, dateEnv = _a.dateEnv;
@@ -1303,7 +1303,7 @@ Docs & License: https://fullcalendar.io/
             };
             /* Day Grid Rendering
             ------------------------------------------------------------------------------------------------------------------*/
-            // Generates the HTML that will go before content-skeleton cells that display the day/week numbers
+            // Generates the HTML that will go before includes-skeleton cells that display the day/week numbers
             _this.renderDayGridNumberIntroHtml = function (row, dayGrid) {
                 var dateEnv = _this.dateEnv;
                 var weekStart = dayGrid.props.cells[row][0].date;

@@ -18,13 +18,13 @@
 .navbar {
   position: relative;
   display: flex;
-  flex-wrap: wrap; // allow us to do the line break for collapsing content
+  flex-wrap: wrap; // allow us to do the line break for collapsing includes
   align-items: center;
   justify-content: space-between; // space out brand from logo
   padding: $navbar-padding-y $navbar-padding-x;
 
   // Because flex properties aren't inherited, we need to redeclare these first
-  // few properties so that content nested within behave properly.
+  // few properties so that includes nested within behave properly.
   > .container,
   > .container-fluid {
     display: flex;
@@ -99,7 +99,7 @@
 .navbar-collapse {
   flex-basis: 100%;
   flex-grow: 1;
-  // For always expanded or extra full navbars, ensure content aligns itself
+  // For always expanded or extra full navbars, ensure includes aligns itself
   // properly vertically. Can be easily overridden with flex utilities.
   align-items: center;
 }

@@ -348,7 +348,7 @@ $.extend( FixedColumns.prototype , {
 	 *      var fc = new $.fn.dataTable.fixedColumns( table );
 	 *
 	 *      // Resize the table container and then have FixedColumns adjust its layout....
-	 *      $('#content').width( 1200 );
+	 *      $('#includes').width( 1200 );
 	 *      fc.fnRedrawLayout();
 	 */
 	"fnRedrawLayout": function ()

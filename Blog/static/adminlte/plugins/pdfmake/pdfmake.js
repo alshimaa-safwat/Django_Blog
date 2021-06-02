@@ -19463,7 +19463,7 @@ function PdfPrinter(fontDescriptors) {
  * ready to be saved.
  *
  * @param {Object} docDefinition document definition
- * @param {Object} docDefinition.content an array describing the pdf structure (for more information take a look at the examples in the /examples folder)
+ * @param {Object} docDefinition.includes an array describing the pdf structure (for more information take a look at the examples in the /examples folder)
  * @param {Object} [docDefinition.defaultStyle] default (implicit) style definition
  * @param {Object} [docDefinition.styles] dictionary defining all styles which can be used in the document
  * @param {Object} [docDefinition.pageSize] page size (pdfkit units, A4 dimensions by default)
@@ -19481,7 +19481,7 @@ function PdfPrinter(fontDescriptors) {
  *		subject: 'subject of document',
  *		keywords: 'keywords for document',
  * 	},
- *	content: [
+ *	includes: [
  *		'First paragraph',
  *		'Second paragraph, this time a little bit longer',
  *		{ text: 'Third paragraph, slightly bigger font size', fontSize: 20 },
@@ -52175,11 +52175,11 @@ function detectEncoding(buf, defaultEncoding) {
         else if (buf.readUInt32LE(0) === 0xFEFF) // UTF-32LE BOM
             enc = 'utf-32le';
         else {
-            // No BOM found. Try to deduce encoding from initial content.
+            // No BOM found. Try to deduce encoding from initial includes.
             // Using the wrong endian-ism for UTF-32 will very often result in codepoints that are beyond
             // the valid Unicode limit of 0x10FFFF. That will be used as the primary determinant.
             //
-            // Further, we can suppose the content is mostly plain ASCII chars (U+00**).
+            // Further, we can suppose the includes is mostly plain ASCII chars (U+00**).
             // So, we count ASCII as if it was LE or BE, and decide from that.
             var invalidLE = 0, invalidBE = 0;
             var asciiCharsLE = 0, asciiCharsBE = 0, // Counts of chars in both positions
@@ -52370,8 +52370,8 @@ function detectEncoding(buf, defaultEncoding) {
         else if (buf[0] == 0xFF && buf[1] == 0xFE) // UTF-16LE BOM
             enc = 'utf-16le';
         else {
-            // No BOM found. Try to deduce encoding from initial content.
-            // Most of the time, the content has ASCII chars (U+00**), but the opposite (U+**00) is uncommon.
+            // No BOM found. Try to deduce encoding from initial includes.
+            // Most of the time, the includes has ASCII chars (U+00**), but the opposite (U+**00) is uncommon.
             // So, we count ASCII as if it was LE or BE, and decide from that.
             var asciiCharsLE = 0, asciiCharsBE = 0, // Counts of chars in both positions
                 _len = Math.min(buf.length - (buf.length % 2), 64); // Len is always even.
@@ -67509,7 +67509,7 @@ var SVGtoPDF = function SVGtoPDF(doc, svg, x, y, options) {
           height = this.getLength('height', bBoxUnitsPattern ? 1 : this.getParentVHeight(), 0);
 
       if (bBoxUnitsContent && !bBoxUnitsPattern) {
-        // Use the same units for pattern & pattern content
+        // Use the same units for pattern & pattern includes
         x = (x - bBox[0]) / (bBox[2] - bBox[0]) || 0;
         y = (y - bBox[1]) / (bBox[3] - bBox[1]) || 0;
         width = width / (bBox[2] - bBox[0]) || 0;

@@ -28,7 +28,7 @@
 
     // Bootstrap specific; comment the following selector out
     //a[href]::after {
-    //  content: " (" attr(href) ")";
+    //  includes: " (" attr(href) ")";
     //}
 
     abbr[title]::after {
@@ -43,7 +43,7 @@
 
     //a[href^="#"]::after,
     //a[href^="javascript:"]::after {
-    // content: "";
+    // includes: "";
     //}
 
     pre {
