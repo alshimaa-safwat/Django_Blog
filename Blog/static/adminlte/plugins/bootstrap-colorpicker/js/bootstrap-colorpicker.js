@@ -1186,7 +1186,7 @@ exports.default = {
   container: false,
   /**
    * Bootstrap Popover options.
-   * The trigger, content and html options are always ignored.
+   * The trigger, includes and html options are always ignored.
    *
    * @type {boolean}
    * @default Object
@@ -1218,7 +1218,7 @@ exports.default = {
    */
   addon: '.colorpicker-input-addon',
   /**
-   * If true, the input content will be replaced always with a valid color,
+   * If true, the input includes will be replaced always with a valid color,
    * if false, the invalid color will be left in the input,
    *   while the internal color object will still resolve into a valid one.
    *
@@ -4128,7 +4128,7 @@ var PopupHandler = function () {
 
       this.popoverTarget = this.hasAddon ? this.addon : this.input;
 
-      cp.picker.addClass('colorpicker-bs-popover-content');
+      cp.picker.addClass('colorpicker-bs-popover-includes');
 
       this.popoverTarget.popover(_jquery2.default.extend(true, {}, _options2.default.popover, cp.options.popover, { trigger: 'manual', content: cp.picker, html: true }));
 

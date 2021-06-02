@@ -84,7 +84,7 @@
         // Map subcontainer jQuery object
         self.$map = $("." + self.options.map.cssClass, self.container);
 
-        // Save initial HTML content (used by destroy method)
+        // Save initial HTML includes (used by destroy method)
         self.initialMapHTMLContent = self.$map.html();
 
         // The tooltip jQuery object
@@ -295,10 +295,10 @@
             // Empty the container (this will also detach all event listeners)
             self.$map.empty();
 
-            // Replace initial HTML content
+            // Replace initial HTML includes
             self.$map.html(self.initialMapHTMLContent);
 
-            // Empty legend containers and replace initial HTML content
+            // Empty legend containers and replace initial HTML includes
             $.each(self.legends, function(legendType) {
                 $.each(self.legends[legendType], function(legendIndex) {
                     var legend = self.legends[legendType][legendIndex];
@@ -1689,7 +1689,7 @@
 
             $legend = $("." + legendOptions.cssClass, self.$container);
 
-            // Save content for later
+            // Save includes for later
             var initialHTMLContent = $legend.html();
             $legend.empty();
 
@@ -1872,7 +1872,7 @@
                         "data-hidden": 0
                     });
 
-                    // Set array content
+                    // Set array includes
                     // We use similar names like map/plots/links
                     legendElems[i] = {
                         mapElem: legendElem,
@@ -2062,9 +2062,9 @@
                 var content = '';
                 // Reset classes
                 self.$tooltip.removeClass().addClass(self.options.map.tooltip.cssClass);
-                // Get content
+                // Get includes
                 if (elem.options.tooltip.content !== undefined) {
-                    // if tooltip.content is function, call it. Otherwise, assign it directly.
+                    // if tooltip.includes is function, call it. Otherwise, assign it directly.
                     if (typeof elem.options.tooltip.content === "function") content = elem.options.tooltip.content(elem.mapElem);
                     else content = elem.options.tooltip.content;
                 }

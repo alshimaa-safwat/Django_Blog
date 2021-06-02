@@ -199,7 +199,7 @@ a[data-goto]:hover {
 }
 
 /*
-row content (which contains day/week numbers and events) as well as "mirror" (which contains
+row includes (which contains day/week numbers and events) as well as "mirror" (which contains
 temporary rendered events).
 */
 .fc-row .fc-content-skeleton {
@@ -824,7 +824,7 @@ Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
   margin-top: 1.5em;
 }
 
-/* inner content */
+/* inner includes */
 .fc-toolbar > * > :not(:first-child) {
   margin-left: 0.75em;
 }

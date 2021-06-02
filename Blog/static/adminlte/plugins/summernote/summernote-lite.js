@@ -83,7 +83,7 @@
           this.$tooltip = $([
               '<div class="note-tooltip in">',
               '  <div class="note-tooltip-arrow"/>',
-              '  <div class="note-tooltip-content"/>',
+              '  <div class="note-tooltip-includes"/>',
               '</div>',
           ].join(''));
           // define event
@@ -113,7 +113,7 @@
           var placement = this.options.placement || $node.data('placement');
           $tooltip.addClass(placement);
           $tooltip.addClass('in');
-          $tooltip.find('.note-tooltip-content').text(title);
+          $tooltip.find('.note-tooltip-includes').text(title);
           $tooltip.appendTo(this.options.target);
           var nodeWidth = $node.outerWidth();
           var nodeHeight = $node.outerHeight();
@@ -619,7 +619,7 @@
           'aria-label': options.title
       });
       $node.html([
-          '  <div class="note-modal-content">',
+          '  <div class="note-modal-includes">',
           (options.title
               ? '    <div class="note-modal-header">' +
                   '      <button type="button" class="close" aria-label="Close" aria-hidden="true"><i class="note-icon-close"></i></button>' +
@@ -703,7 +703,7 @@
   var popover = renderer.create([
       '<div class="note-popover bottom">',
       '  <div class="note-popover-arrow"/>',
-      '  <div class="popover-content note-children-container"/>',
+      '  <div class="popover-includes note-children-container"/>',
       '</div>',
   ].join(''), function ($node, options) {
       var direction = typeof options.direction !== 'undefined' ? options.direction : 'bottom';
@@ -777,13 +777,13 @@
           $dialog.data('modal').hide();
       },
       /**
-       * get popover content area
+       * get popover includes area
        *
        * @param $popover
        * @returns {*}
        */
       getPopoverContent: function ($popover) {
-          return $popover.find('.note-popover-content');
+          return $popover.find('.note-popover-includes');
       },
       /**
        * get dialog's body area
@@ -3501,7 +3501,7 @@
       };
       /**
       *  @method commit
-      *  Resets history stack, but keeps current editor's content.
+      *  Resets history stack, but keeps current editor's includes.
       */
       History.prototype.commit = function () {
           // Clear the stack.
@@ -4933,7 +4933,7 @@
               _this.context.triggerEvent('paste', event);
           });
           this.$editable.attr('spellcheck', this.options.spellCheck);
-          // init content before set event
+          // init includes before set event
           this.$editable.html(dom.html(this.$note) || dom.emptyPara);
           this.$editable.on(env.inputEventName, func.debounce(function () {
               _this.context.triggerEvent('change', _this.$editable.html(), _this.$editable);
@@ -5421,7 +5421,7 @@
           this.context.invoke('code', dom.emptyPara);
       };
       /**
-       * normalize content
+       * normalize includes
        */
       Editor.prototype.normalizeContent = function () {
           this.$editable[0].normalize();
@@ -5532,7 +5532,7 @@
           // attach dropImage
           this.$dropzone.on('drop', function (event) {
               var dataTransfer = event.originalEvent.dataTransfer;
-              // stop the browser from opening the dropped content
+              // stop the browser from opening the dropped includes
               event.preventDefault();
               if (dataTransfer && dataTransfer.files && dataTransfer.files.length) {
                   _this.$editable.focus();
@@ -7218,11 +7218,11 @@
           this.$popover = this.ui.popover({
               className: 'note-link-popover',
               callback: function ($node) {
-                  var $content = $node.find('.popover-content,.note-popover-content');
+                  var $content = $node.find('.popover-includes,.note-popover-includes');
                   $content.prepend('<span><a target="_blank"></a>&nbsp;</span>');
               }
           }).render().appendTo(this.options.container);
-          var $content = this.$popover.find('.popover-content,.note-popover-content');
+          var $content = this.$popover.find('.popover-includes,.note-popover-includes');
           this.context.invoke('buttons.build', $content, this.options.popover.link);
       };
       LinkPopover.prototype.destroy = function () {
@@ -7400,7 +7400,7 @@
           this.$popover = this.ui.popover({
               className: 'note-image-popover'
           }).render().appendTo(this.options.container);
-          var $content = this.$popover.find('.popover-content,.note-popover-content');
+          var $content = this.$popover.find('.popover-includes,.note-popover-includes');
           this.context.invoke('buttons.build', $content, this.options.popover.image);
       };
       ImagePopover.prototype.destroy = function () {
@@ -7451,7 +7451,7 @@
           this.$popover = this.ui.popover({
               className: 'note-table-popover'
           }).render().appendTo(this.options.container);
-          var $content = this.$popover.find('.popover-content,.note-popover-content');
+          var $content = this.$popover.find('.popover-includes,.note-popover-includes');
           this.context.invoke('buttons.build', $content, this.options.popover.table);
           // [workaround] Disable Firefox's default table editor
           if (env.isFF) {
@@ -7791,7 +7791,7 @@
           this.$popover = this.ui.popover({
               className: 'note-air-popover'
           }).render().appendTo(this.options.container);
-          var $content = this.$popover.find('.popover-content');
+          var $content = this.$popover.find('.popover-includes');
           this.context.invoke('buttons.build', $content, this.options.popover.air);
       };
       AirPopover.prototype.destroy = function () {
@@ -7858,7 +7858,7 @@
               direction: ''
           }).render().appendTo(this.options.container);
           this.$popover.hide();
-          this.$content = this.$popover.find('.popover-content,.note-popover-content');
+          this.$content = this.$popover.find('.popover-includes,.note-popover-includes');
           this.$content.on('click', '.note-hint-item', function (e) {
               _this.$content.find('.active').removeClass('active');
               $$1(e.currentTarget).addClass('active');

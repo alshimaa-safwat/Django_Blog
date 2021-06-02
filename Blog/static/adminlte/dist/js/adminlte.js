@@ -30,9 +30,9 @@
     };
     var Selector = {
       CONTROL_SIDEBAR: '.control-sidebar',
-      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
+      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-includes',
       DATA_TOGGLE: '[data-widget="control-sidebar"]',
-      CONTENT: '.content-wrapper',
+      CONTENT: '.includes-wrapper',
       HEADER: '.main-header',
       FOOTER: '.main-footer'
     };
@@ -298,12 +298,12 @@
       HEADER: '.main-header',
       MAIN_SIDEBAR: '.main-sidebar',
       SIDEBAR: '.main-sidebar .sidebar',
-      CONTENT: '.content-wrapper',
+      CONTENT: '.includes-wrapper',
       BRAND: '.brand-link',
-      CONTENT_HEADER: '.content-header',
+      CONTENT_HEADER: '.includes-header',
       WRAPPER: '.wrapper',
       CONTROL_SIDEBAR: '.control-sidebar',
-      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
+      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-includes',
       CONTROL_SIDEBAR_BTN: '[data-widget="control-sidebar"]',
       LAYOUT_FIXED: '.layout-fixed',
       FOOTER: '.main-footer',
@@ -314,7 +314,7 @@
     var ClassName = {
       HOLD: 'hold-transition',
       SIDEBAR: 'main-sidebar',
-      CONTENT_FIXED: 'content-fixed',
+      CONTENT_FIXED: 'includes-fixed',
       SIDEBAR_FOCUSED: 'sidebar-focused',
       LAYOUT_FIXED: 'layout-fixed',
       NAVBAR_FIXED: 'layout-navbar-fixed',

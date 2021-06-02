@@ -17,7 +17,7 @@ You can also add `.control-sidebar-push-slide` to `body`, to push the content aw
 ```html
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+    <!-- Control sidebar includes goes here -->
     <div class="p-3">
       <!-- Content of the sidebar goes here -->
     </div>
@@ -30,7 +30,7 @@ You can also add `.control-sidebar-push-slide` to `body`, to push the content aw
 ```html
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-light">
-    <!-- Control sidebar content goes here -->
+    <!-- Control sidebar includes goes here -->
     <div class="p-3">
       <!-- Content of the sidebar goes here -->
     </div>

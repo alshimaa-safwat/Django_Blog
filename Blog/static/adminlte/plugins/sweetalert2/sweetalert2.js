@@ -1006,7 +1006,7 @@ var renderContent = function renderContent(instance, params) {
     show(content, 'block'); // Content as plain text
   } else if (params.text) {
     content.textContent = params.text;
-    show(content, 'block'); // No content
+    show(content, 'block'); // No includes
   } else {
     hide(content);
   }
@@ -1702,7 +1702,7 @@ var fixScrollbar = function fixScrollbar() {
 
 
   if (document.body.scrollHeight > window.innerHeight) {
-    // add padding so the content doesn't shift after removal of scrollbar
+    // add padding so the includes doesn't shift after removal of scrollbar
     states.previousBodyPadding = parseInt(window.getComputedStyle(document.body).getPropertyValue('padding-right'));
     document.body.style.paddingRight = states.previousBodyPadding + measureScrollbar() + 'px';
   }
