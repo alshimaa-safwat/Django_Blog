@@ -2,14 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from posts.models import Post, Category, ForrbiddenWord
-from .forms import createCategoryForm, CreateUserForm
+from .forms import createCategoryForm, CreateUserForm ,CreatePostForm
 
-
-# import forms
-
-
-# Create your views here.
-# users
 def get_dashboard(request):
     return render(request, 'admin/adminlte.html')
 
@@ -70,7 +64,7 @@ def get_categories(request):
     categories = Category.objects.all()
     main_content_var = "Categories"
     context = {'categories': categories, 'mainContentVar': main_content_var}
-    return render(request, 'admin/includes/categories.html', context)
+    return render(request, 'admin/categories/categories.html', context)
 
 
 def add_category(request):
@@ -78,17 +72,17 @@ def add_category(request):
         category_form = createCategoryForm(request.POST)
         if category_form.is_valid():
             category_form.save()
-            return HttpResponseRedirect("/blogs/categories")
+            return HttpResponseRedirect("/dashboard/categories")
     else:
         category_form = createCategoryForm()
         context = {'category_form': category_form}
-        return render(request, 'admin/includes/createCategory.html', context)
+        return render(request, 'admin/categories/createCategory.html', context)
 
 
 def delete_category(request, id):
     category = Category.objects.get(id=id)
     category.delete()
-    return HttpResponseRedirect("/blogs/categories")
+    return HttpResponseRedirect("/dashboard/categories")
 
 
 def edit_category(request, id):
@@ -97,21 +91,34 @@ def edit_category(request, id):
         category_form = createCategoryForm(request.POST, instance=category)
         if category_form.is_valid():
             category_form.save()
-            return HttpResponseRedirect("/blogs/categories")
+            return HttpResponseRedirect("/dashboard/categories")
     else:
         category_form = createCategoryForm(instance=category)
         context = {'category_form': category_form}
-        return render(request, 'admin/includes/createCategory.html', context)
+        return render(request, 'admin/categories/createCategory.html', context)
 
 
 def get_posts(request):
     posts = Post.objects.all()
     main_content_var = "Posts"
     context = {'posts': posts, 'mainContentVar': main_content_var}
-    return render(request, 'admin/includes/postsList.html', context)
+    return render(request, 'admin/posts/postsList.html', context)
 
 
 def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
     post.delete()
-    return HttpResponseRedirect("/blogs/posts")
+    return HttpResponseRedirect("/dashboard/posts")
+
+
+def add_post(request):
+   
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/posts")
+    else:
+        post_form =CreatePostForm()
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)    
