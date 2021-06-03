@@ -138,14 +138,14 @@ def about(request):
     return render(request, 'posts/about.html', {'cats': cats})
 
 
-def listCat(request, catid):
+def list_cat(request, catid):
     posts = Post.objects.filter(category_id=catid)
     cats = Category.objects.all()
     context = {'posts': posts, 'cats': cats}
     return render(request, 'posts/index.html', context)
 
 
-def addComment(request, postid):  # the worst function i had done shitty code i know
+def add_comment(request, postid):  # the worst function i had done shitty code i know
     if request.method == "POST":
         post = Post.objects.get(id=postid)
         uname = request.user  # we have to replace it with auth user
@@ -167,7 +167,7 @@ def addComment(request, postid):  # the worst function i had done shitty code i 
 
 
 # delete comment function
-def deletecomment(request, comid):
+def delete_comment(request, comid):
     comment = Comment.objects.get(id=comid)
     postid = comment.post_id
     if (request.user == comment.user or request.user.is_staff):
@@ -176,7 +176,7 @@ def deletecomment(request, comid):
 
 
 # get like data function
-def getLikeData(request):
+def get_like_data(request):
     postId = request.GET['postId']
     userId = request.user.id
     print(userId)
@@ -184,7 +184,7 @@ def getLikeData(request):
     refresh = request.GET['refreshx']
     reaction, created = Reaction.objects.get_or_create(
         post_id=postId, user_id=userId)
-    if (refresh == '0'):
+    if(refresh == '0'):
         reaction.react = reactState
         reaction.save()
     else:
@@ -194,76 +194,3 @@ def getLikeData(request):
         post_id=postId, react="dislike").count()
 
     return HttpResponse(json.dumps({'reactType': reaction.react, 'likeReact': likeReact, 'dislikeReact': dislikeReact}))
-
-# by Shendi
-
-
-def home_page(request):
-    posts = Post.objects.all().order_by('date')
-    paginator = Paginator(posts)
-    page = request.get('page', 1)
-    p = paginator.page(page)
-    for post in posts:
-        dislikes = Reaction.objects.filter(
-            react="dislike", post_name=post.id).count()
-        if dislikes == 10:
-            post.delete()
-    categories = Category.objects.all()
-    return render(request, 'posts/index.html', {'posts': p, 'categories': categories})
-
-
-def display_post(request, post_id):
-    post = Post.objects.get(id=post_id)
-    categories = Category.objects.all()
-    comments = Comment.objects.filter(post_id=post_id)
-
-    data = []
-    for comment in comments:
-        try:
-            replies = Reply.objects.filter(comment_id=comment.id)
-            data.append({'comment': comment, 'replies': replies})
-        except Exception as e:
-            data.append({"comment": comment})
-
-    return render(request, 'posts/post.html', {'post': post, 'data': data, 'categories': categories})
-
-
-def add_post(request):
-    if request.method == 'POST':
-        post = PostForm(request.POST, request.FILES, Post)
-        if post.is_valid():
-            new_post = post.save(commit=False)
-            new_post.author = request.user
-            new_post.thumbnail = request.FILES.get('thumbnail')
-            new_post.save()
-            return HttpResponseRedirect('/posts/')
-    else:
-        post = PostForm()
-
-    categories = Category.objects.all()
-    return render(request, 'posts/new.html', {'post': post, 'categories': categories, 'status': 'New'})
-
-
-def edit_post(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if(request.user == post.author or request.user.is_staff):
-        if request.method == "POST":
-            form = PostForm(request.POST, instance=post)
-            if form.is_valid():
-                new_form = form.save(commit=False)
-                new_form.thumbnail = request.FILES.get('thumbnail')
-                new_form.save()
-                return HttpResponseRedirect('/posts/')
-        else:
-            form = PostForm(instance=post)
-            categories = Category.objects.all()
-            return render(request, 'posts/new.html', {'post': form, 'categories': categories, 'status': "Edit"})
-    else:
-        return HttpResponseRedirect('/posts/')
-
-
-def delete_post(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if(request.user == post.author or request.user.is_staff):
-        post.delete()
-    return HttpResponseRedirect('/posts/')
