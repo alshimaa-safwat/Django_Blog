@@ -82,7 +82,6 @@ DATABASES = {
         'NAME': 'blog',
         'USER': 'django',
         'PASSWORD': 'Password123#@!'
-
     }
 }
 
