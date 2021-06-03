@@ -201,15 +201,15 @@ def get_like_data(request):
 def home_page(request):
     posts = Post.objects.all().order_by('date')
     paginator = Paginator(posts, 10)
-    page = request.get('page', 1)
-    p = paginator.page(page)
+    page_number = request.GET.get('page', 1)
+    page = paginator.page(page_number)
     for post in posts:
         dislikes = Reaction.objects.filter(
             react="dislike", post_name=post.id).count()
         if dislikes == 10:
             post.delete()
     categories = Category.objects.all()
-    return render(request, 'posts/index.html', {'posts': p, 'categories': categories})
+    return render(request, 'posts/index.html', {'posts': page, 'categories': categories})
 
 
 def display_post(request, post_id):
