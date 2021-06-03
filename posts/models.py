@@ -71,7 +71,7 @@ class Reply(models.Model):
 		return '%s %s' % (self.user, self.comment)
 
 
-class ForrbedinWord(models.Model):
+class ForbiddenWord(models.Model):
 	word =models.CharField(max_length=10)
 
 	def __str__(self):
