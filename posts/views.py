@@ -200,7 +200,7 @@ def get_like_data(request):
 
 def home_page(request):
     posts = Post.objects.all().order_by('date')
-    paginator = Paginator(posts)
+    paginator = Paginator(posts, 10)
     page = request.get('page', 1)
     p = paginator.page(page)
     for post in posts:
