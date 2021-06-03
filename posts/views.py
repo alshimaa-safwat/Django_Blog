@@ -1,3 +1,4 @@
+from django.core import paginator
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post, Category, Comment, Reply, Reaction, ForbiddenWord
@@ -22,7 +23,8 @@ def getSubscribeData(request):
             else:
                 pass
     else:
-        subscribes, created = Subscribes.objects.get_or_create(user_id=userId, Category_id=catNum)
+        subscribes, created = Subscribes.objects.get_or_create(
+            user_id=userId, Category_id=catNum)
         if created == True:
             cat.append(subscribes.Category.id)
             try:
@@ -32,7 +34,8 @@ def getSubscribeData(request):
                 message = 'u have subscibed in :' + cato.name + ' use this url to visit this category http://127.0.0.1:8000/posts/listcat/' + str(
                     cato.id)
                 recepient = user.email
-                send_mail(subject, message, 'osamaeltayar011100', [recepient], fail_silently=False)
+                send_mail(subject, message, 'osamaeltayar011100',
+                          [recepient], fail_silently=False)
             except Exception as e:
                 print(e)
 
@@ -86,7 +89,7 @@ def addReply(request, comid):
                     rep += "*"
                 con = con.replace(word.word, rep)
             rep = Reply(user=uname, comment=comment, content=con)
-            rep.save();
+            rep.save()
         return HttpResponseRedirect('/posts/' + str(comment.post_name_id))
 
 
@@ -179,13 +182,88 @@ def getLikeData(request):
     print(userId)
     reactState = request.GET['reactStatex']
     refresh = request.GET['refreshx']
-    reaction, created = Reaction.objects.get_or_create(post_id=postId, user_id=userId)
+    reaction, created = Reaction.objects.get_or_create(
+        post_id=postId, user_id=userId)
     if (refresh == '0'):
         reaction.react = reactState
         reaction.save()
     else:
         pass
     likeReact = Reaction.objects.filter(post_id=postId, react="like").count()
-    dislikeReact = Reaction.objects.filter(post_id=postId, react="dislike").count()
+    dislikeReact = Reaction.objects.filter(
+        post_id=postId, react="dislike").count()
 
     return HttpResponse(json.dumps({'reactType': reaction.react, 'likeReact': likeReact, 'dislikeReact': dislikeReact}))
+
+# by Shendi
+
+
+def home_page(request):
+    posts = Post.objects.all().order_by('date')
+    paginator = Paginator(posts)
+    page = request.get('page', 1)
+    p = paginator.page(page)
+    for post in posts:
+        dislikes = Reaction.objects.filter(
+            react="dislike", post_name=post.id).count()
+        if dislikes == 10:
+            post.delete()
+    categories = Category.objects.all()
+    return render(request, 'posts/index.html', {'posts': p, 'categories': categories})
+
+
+def display_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    categories = Category.objects.all()
+    comments = Comment.objects.filter(post_id=post_id)
+
+    data = []
+    for comment in comments:
+        try:
+            replies = Reply.objects.filter(comment_id=comment.id)
+            data.append({'comment': comment, 'replies': replies})
+        except Exception as e:
+            data.append({"comment": comment})
+
+    return render(request, 'posts/post.html', {'post': post, 'data': data, 'categories': categories})
+
+
+def add_post(request):
+    if request.method == 'POST':
+        post = PostForm(request.POST, request.FILES, Post)
+        if post.is_valid():
+            new_post = post.save(commit=False)
+            new_post.author = request.user
+            new_post.thumbnail = request.FILES.get('thumbnail')
+            new_post.save()
+            return HttpResponseRedirect('/posts/')
+    else:
+        post = PostForm()
+
+    categories = Category.objects.all()
+    return render(request, 'posts/new.html', {'post': post, 'categories': categories, 'status': 'New'})
+
+
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if(request.user == post.author or request.user.is_staff):
+        if request.method == "POST":
+            form = PostForm(request.POST, instance=post)
+            if form.is_valid():
+                new_form = form.save(commit=False)
+                new_form.thumbnail = request.FILES.get('thumbnail')
+                new_form.save()
+                return HttpResponseRedirect('/posts/')
+        else:
+            form = PostForm(instance=post)
+            categories = Category.objects.all()
+            return render(request, 'posts/new.html', {'post': form, 'categories': categories, 'status': "Edit"})
+    else:
+        return HttpResponseRedirect('/posts/')
+
+
+def deletePost(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if(request.user == post.author or request.user.is_staff):
+        post.delete()
+    return HttpResponseRedirect('/posts/')
