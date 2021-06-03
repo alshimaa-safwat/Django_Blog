@@ -262,7 +262,7 @@ def edit_post(request, post_id):
         return HttpResponseRedirect('/posts/')
 
 
-def deletePost(request, post_id):
+def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
     if(request.user == post.author or request.user.is_staff):
         post.delete()
