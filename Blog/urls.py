@@ -8,6 +8,12 @@ urlpatterns = [
     path('users/<id>/edit', views.edit_user, name="dashboard.users.edit"),
     path('users/<id>/update', views.update_user, name="dashboard.users.update"),
     path('users/<id>/delete', views.delete_user, name="dashboard.users.delete"),
+    path('users/<id>/lock', views.lock_user, name="dashboard.users.lock"),
+    path('users/<id>/unlock', views.unlock_user, name="dashboard.users.unlock"),
+    path('users/<id>/upgrade', views.upgrade_user,
+         name="dashboard.users.upgrade"),
+    path('users/<id>/downgrade', views.downgrade_user,
+         name="dashboard.users.downgrade"),
 
     path('categories/', views.get_categories),
     path('categories/edit/<id>', views.edit_category),

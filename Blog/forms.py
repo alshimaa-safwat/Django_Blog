@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from posts.models import Category, Post, ForrbiddenWord
+from posts.models import Category, Post, ForbiddenWord
 
 
 # new user form
@@ -23,8 +23,8 @@ class CreateCategoryForm(forms.ModelForm):
         fields = ('name',)
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-        } 
-        
+        }
+
 
 class CreatePostForm(forms.ModelForm):
     class Meta:
@@ -34,12 +34,12 @@ class CreatePostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.TextInput(attrs={'class': 'form-control'}),
 
-        } 
-    
-        
+        }
+
+
 class CreateBadWordForm(forms.ModelForm):
     class Meta:
-        model = ForrbiddenWord
+        model = ForbiddenWord
         fields = ('word',)
         widgets = {
             'word': forms.TextInput(attrs={'class': 'form-control'}),
