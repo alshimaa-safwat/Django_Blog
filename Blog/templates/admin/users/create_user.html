@@ -1,0 +1,13 @@
+{% extends "admin/adminlte.html" %}
+
+{% load static %}
+{% load i18n static %}
+
+{% block mainContent %}
+    <form method="post"> {% csrf_token %}
+        {{ user_form.as_p }}
+
+        <button type="submit" class="btn btn-outline-primary">Add User</button>
+
+    </form>
+{% endblock %}

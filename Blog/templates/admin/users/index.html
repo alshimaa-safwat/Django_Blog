@@ -1,0 +1,54 @@
+    {% extends "admin/adminlte.html" %}
+
+{% load static %}
+{% load i18n static %}
+{% block mainContent %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">username</th>
+            <th scope="col">e-mail</th>
+            <th scope="col">first name</th>
+            <th scope="col">last name</th>
+            <th><a href="{% url 'dashboard.users.new' %}" class="btn btn-outline-success"><i class="fa fa-plus"></i> <strong>User</strong></a>
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            {% if user.is_superuser %}
+                <tr class="table-danger">
+                    {% else %}
+                <tr>
+            {% endif %}
+        <td>{{ user.id }}</td>
+        <td>{{ user.get_username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        {% if user.is_superuser %}
+            <td>
+                <a href="{% url 'dashboard.users.downgrade' user.id %}" class="btn btn-info">Make User</a>
+            </td>
+        {% else %}
+            <td>
+                <a href="{% url 'dashboard.users.upgrade' user.id %}" class="btn btn-outline-info">Make Admin</a>
+                <a href="{% url 'dashboard.users.edit' user.id %}" class="btn btn-outline-warning"><i class="far fa-edit"></i></a>
+                <a href="{% url 'dashboard.users.delete' user.id %}" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                {% if user.is_active is True %}
+                    <a href="{% url 'dashboard.users.lock' user.id %}" class="btn btn-outline-primary"><i class="fas fa-lock"></i></a>
+                {% else %}
+                    <a href="{% url 'dashboard.users.unlock' user.id %}" class="btn btn-outline-info"><i class="fas fa-unlock"></i></a>
+                {% endif %}
+            </td>
+        {% endif %}
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
