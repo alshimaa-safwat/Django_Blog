@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 emotion = (('like', 'like'), ('dislike', 'dislike'), ('none', 'none'))
 
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
