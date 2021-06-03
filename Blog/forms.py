@@ -17,7 +17,7 @@ class CreateUserForm(forms.ModelForm):
         }
 
 
-class createCategoryForm(forms.ModelForm):
+class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ('name',)
@@ -37,7 +37,7 @@ class CreatePostForm(forms.ModelForm):
         } 
     
         
-class createBadWordForm(forms.ModelForm):
+class CreateBadWordForm(forms.ModelForm):
     class Meta:
         model = ForrbiddenWord
         fields = ('word',)
