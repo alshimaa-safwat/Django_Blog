@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from posts.models import Post, Category, ForbiddenWord
-from .forms import createCategoryForm, CreateUserForm, CreatePostForm, createBadWordForm
+from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
 
 
 def edit_post(request, post_id):
@@ -33,12 +33,12 @@ def delete_word(request, id):
 
 def add_word(request):
     if request.method == "POST":
-        bad_word_form = createBadWordForm(request.POST)
+        bad_word_form = CreateBadWordForm(request.POST)
         if bad_word_form.is_valid():
             bad_word_form.save()
             return HttpResponseRedirect("/dashboard/words")
     else:
-        bad_word_form = createBadWordForm()
+        bad_word_form = CreateBadWordForm()
         context = {'badWord_form': bad_word_form}
         return render(request, 'admin/words/createBadWord.html', context)
 
@@ -46,12 +46,12 @@ def add_word(request):
 def edit_word(request, id):
     word = ForbiddenWord.objects.get(id=id)
     if request.method == "POST":
-        bad_word_form = createBadWordForm(request.POST, instance=word)
+        bad_word_form = CreateBadWordForm(request.POST, instance=word)
         if bad_word_form.is_valid():
             bad_word_form.save()
             return HttpResponseRedirect("/dashboard/words")
     else:
-        bad_word_form = createBadWordForm(instance=word)
+        bad_word_form = CreateBadWordForm(instance=word)
         context = {'badWord_form': bad_word_form}
         return render(request, 'admin/words/createBadWord.html', context)
 
@@ -149,12 +149,12 @@ def get_categories(request):
 
 def add_category(request):
     if request.method == "POST":
-        category_form = createCategoryForm(request.POST)
+        category_form = CreateCategoryForm(request.POST)
         if category_form.is_valid():
             category_form.save()
             return HttpResponseRedirect("/dashboard/categories")
     else:
-        category_form = createCategoryForm()
+        category_form = CreateCategoryForm()
         context = {'category_form': category_form}
         return render(request, 'admin/categories/createCategory.html', context)
 
@@ -168,12 +168,12 @@ def delete_category(request, id):
 def edit_category(request, id):
     category = Category.objects.get(id=id)
     if request.method == "POST":
-        category_form = createCategoryForm(request.POST, instance=category)
+        category_form = CreateCategoryForm(request.POST, instance=category)
         if category_form.is_valid():
             category_form.save()
             return HttpResponseRedirect("/dashboard/categories")
     else:
-        category_form = createCategoryForm(instance=category)
+        category_form = CreateCategoryForm(instance=category)
         context = {'category_form': category_form}
         return render(request, 'admin/categories/createCategory.html', context)
 
