@@ -1,7 +1,7 @@
 from django.core import paginator
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Post, Category, Comment, Reply, Reaction, ForbiddenWord
+from .models import Post, Category, Comment, Reply, Reaction, ForbiddenWord, Subscribe
 import json
 import re
 from .forms import PostForm
@@ -16,14 +16,14 @@ def getSubscribeData(request):
     cat = []
     sub = []
     if refresh == '1':
-        subscribes = Subscribes
+        subscribes = Subscribe
         for x in subscribes.objects.filter(user_name_id=userId):
             if x.user.id == userId:
                 cat.append(x.Category.id)
             else:
                 pass
     else:
-        subscribes, created = Subscribes.objects.get_or_create(
+        subscribes, created = Subscribe.objects.get_or_create(
             user_id=userId, Category_id=catNum)
         if created == True:
             cat.append(subscribes.Category.id)
