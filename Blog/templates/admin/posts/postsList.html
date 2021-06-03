@@ -35,9 +35,11 @@
         <td>{{post.author}}</td>
         <td>{{post.thumbnail}}</td>
         <td>{{post.category}}</td>
-        <td>
+         <td>
+            <a href="../editpost/{{post.id}}" class="btn btn-success"><i class="far fa-edit"></i></a>
             <a href="../delete/{{post.id}}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
         </td>
+
     </tr>
     {%endfor%}
     </tbody>

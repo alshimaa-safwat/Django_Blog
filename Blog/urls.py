@@ -10,8 +10,10 @@ urlpatterns = [
     path('users/<id>/delete', views.delete_user, name="dashboard.users.delete"),
     path('users/<id>/lock', views.lock_user, name="dashboard.users.lock"),
     path('users/<id>/unlock', views.unlock_user, name="dashboard.users.unlock"),
-    path('users/<id>/upgrade', views.upgrade_user, name="dashboard.users.upgrade"),
-    path('users/<id>/downgrade', views.downgrade_user, name="dashboard.users.downgrade"),
+    path('users/<id>/upgrade', views.upgrade_user,
+         name="dashboard.users.upgrade"),
+    path('users/<id>/downgrade', views.downgrade_user,
+         name="dashboard.users.downgrade"),
 
     path('categories/', views.get_categories),
     path('categories/edit/<id>', views.edit_category),
@@ -20,4 +22,10 @@ urlpatterns = [
     path('posts/', views.get_posts),
     path('posts/new/', views.add_post),
     path('delete/<post_id>', views.delete_post),
+    path('editpost/<post_id>', views.edit_post),
+
+    path('words/', views.words),
+    path('words/editWord/<id>', views.edit_word),
+    path('words/deleteWord/<id>', views.delete_word),
+    path('words/addWord/', views.add_word),
 ]

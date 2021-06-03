@@ -2,7 +2,58 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from posts.models import Post, Category, ForbiddenWord
-from .forms import createCategoryForm, CreateUserForm, CreatePostForm
+from .forms import createCategoryForm, CreateUserForm, CreatePostForm, createBadWordForm
+
+
+def edit_post(request, post_id):
+    post_form = Post.objects.get(id=post_id)
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST, instance=post_form)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/categories")
+    else:
+        post_form = CreatePostForm(instance=post_form)
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)
+
+
+def words(request):
+    word = ForbiddenWord.objects.all()
+    mainContentVar = "Forbidden Words"
+    context = {'word': word, 'mainContentVar': mainContentVar}
+    return render(request, 'admin/words/wordsForbidden.html', context)
+
+
+def delete_word(request, id):
+    word = ForbiddenWord.objects.get(id=id)
+    word.delete()
+    return HttpResponseRedirect("/dashboard/words")
+
+
+def add_word(request):
+    if request.method == "POST":
+        bad_word_form = createBadWordForm(request.POST)
+        if bad_word_form.is_valid():
+            bad_word_form.save()
+            return HttpResponseRedirect("/dashboard/words")
+    else:
+        bad_word_form = createBadWordForm()
+        context = {'badWord_form': bad_word_form}
+        return render(request, 'admin/words/createBadWord.html', context)
+
+
+def edit_word(request, id):
+    word = ForbiddenWord.objects.get(id=id)
+    if request.method == "POST":
+        bad_word_form = createBadWordForm(request.POST, instance=word)
+        if bad_word_form.is_valid():
+            bad_word_form.save()
+            return HttpResponseRedirect("/dashboard/words")
+    else:
+        bad_word_form = createBadWordForm(instance=word)
+        context = {'badWord_form': bad_word_form}
+        return render(request, 'admin/words/createBadWord.html', context)
 
 
 def get_dashboard(request):
