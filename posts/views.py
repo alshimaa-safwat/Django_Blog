@@ -193,3 +193,77 @@ def get_like_data(request):
         post_id=postId, react="dislike").count()
 
     return HttpResponse(json.dumps({'reactType': reaction.react, 'likeReact': likeReact, 'dislikeReact': dislikeReact}))
+
+
+# by Shendi
+
+
+def home_page(request):
+    posts = Post.objects.all().order_by('date')
+    paginator = Paginator(posts)
+    page = request.get('page', 1)
+    p = paginator.page(page)
+    for post in posts:
+        dislikes = Reaction.objects.filter(
+            react="dislike", post_name=post.id).count()
+        if dislikes == 10:
+            post.delete()
+    categories = Category.objects.all()
+    return render(request, 'posts/index.html', {'posts': p, 'categories': categories})
+
+
+def display_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    categories = Category.objects.all()
+    comments = Comment.objects.filter(post_id=post_id)
+
+    data = []
+    for comment in comments:
+        try:
+            replies = Reply.objects.filter(comment_id=comment.id)
+            data.append({'comment': comment, 'replies': replies})
+        except Exception as e:
+            data.append({"comment": comment})
+
+    return render(request, 'posts/post.html', {'post': post, 'data': data, 'categories': categories})
+
+
+def add_post(request):
+    if request.method == 'POST':
+        post = PostForm(request.POST, request.FILES, Post)
+        if post.is_valid():
+            new_post = post.save(commit=False)
+            new_post.author = request.user
+            new_post.thumbnail = request.FILES.get('thumbnail')
+            new_post.save()
+            return HttpResponseRedirect('/posts/')
+    else:
+        post = PostForm()
+
+    categories = Category.objects.all()
+    return render(request, 'posts/new.html', {'post': post, 'categories': categories, 'status': 'New'})
+
+
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if(request.user == post.author or request.user.is_staff):
+        if request.method == "POST":
+            form = PostForm(request.POST, instance=post)
+            if form.is_valid():
+                new_form = form.save(commit=False)
+                new_form.thumbnail = request.FILES.get('thumbnail')
+                new_form.save()
+                return HttpResponseRedirect('/posts/')
+        else:
+            form = PostForm(instance=post)
+            categories = Category.objects.all()
+            return render(request, 'posts/new.html', {'post': form, 'categories': categories, 'status': "Edit"})
+    else:
+        return HttpResponseRedirect('/posts/')
+
+
+def delete_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if(request.user == post.author or request.user.is_staff):
+        post.delete()
+    return HttpResponseRedirect('/posts/')
