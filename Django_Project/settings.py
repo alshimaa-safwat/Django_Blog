@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks'
-
 ]
 
 MIDDLEWARE = [
@@ -82,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
-        'USER': 'django',
-        'PASSWORD': 'Password123#@!'
+        'USER': 'root',
+        'PASSWORD': 'root'
     }
 }
 

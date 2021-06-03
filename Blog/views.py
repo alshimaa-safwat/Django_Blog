@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from posts.models import Post, Category, ForrbiddenWord
-from .forms import createCategoryForm, CreateUserForm ,CreatePostForm
+from posts.models import Post, Category, ForbiddenWord
+from .forms import createCategoryForm, CreateUserForm, CreatePostForm
+
 
 def get_dashboard(request):
     return render(request, 'admin/adminlte.html')
@@ -30,10 +31,6 @@ def create_user(request):
 def edit_user(request, id):
     user = User.objects.get(id=id)
     context = {'user': user}
-    # if user.is_staff:
-    #     # ??????????????????
-    #     return render(request, 'ourBlog/posts', context)
-    # else:
     return render(request, 'admin/users/edit_user.html', context)
 
 
@@ -58,6 +55,38 @@ def delete_user(request, id):
 
     except User.DoesNotExist:
         return HttpResponseRedirect("/dashboard/users")
+
+
+def lock_user(request, id):
+    user = User.objects.get(id=id)
+    user.is_active = False
+    user.save()
+    return HttpResponseRedirect('/dashboard/users')
+
+
+def unlock_user(request, id):
+    user = User.objects.get(id=id)
+    user.is_active = True
+    user.save()
+    return HttpResponseRedirect('/dashboard/users')
+
+
+def upgrade_user(request, id):
+    user = User.objects.get(id=id)
+    user.is_staff = True
+    user.is_admin = True
+    user.is_superuser = True
+    user.save()
+    return HttpResponseRedirect("/dashboard/users")
+
+
+def downgrade_user(request, id):
+    user = User.objects.get(id=id)
+    user.is_staff = False
+    user.is_admin = False
+    user.is_superuser = False
+    user.save()
+    return HttpResponseRedirect("/dashboard/users")
 
 
 def get_categories(request):
@@ -112,13 +141,12 @@ def delete_post(request, post_id):
 
 
 def add_post(request):
-   
     if request.method == "POST":
         post_form = CreatePostForm(request.POST)
         if post_form.is_valid():
             post_form.save()
             return HttpResponseRedirect("/dashboard/posts")
     else:
-        post_form =CreatePostForm()
+        post_form = CreatePostForm()
         context = {'post_form': post_form}
-        return render(request, 'admin/posts/createPost.html', context)    
+        return render(request, 'admin/posts/createPost.html', context)
