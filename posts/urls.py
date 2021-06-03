@@ -3,10 +3,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('<postid>/addcomment',views.addComment),
+    path('<postid>/addcomment',views.add_comment),
     path('<comid>/deletecomment',views.deletecomment),
     url(r'^about/$', views.about),
-	path('listcat/<catid>', views.listCat),
-    url(r'^like$', views.getLikeData),
+	path('listcat/<catid>', views.list_cat),
+    url(r'^like$', views.get_like_data),
     
 ]

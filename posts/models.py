@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+emotion = (('like','like'),('dislike','dislike'),('none','none'))
 
 # Create your models here.
 class Category(models.Model):
@@ -36,20 +36,50 @@ class Post(models.Model):
 
 # Comment model
 class Comment(models.Model):
-	post = models.ForeignKey(Post, on_delete=models.CASCADE)
-	user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-	content = models.CharField(max_length=200)
-	date = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    content = models.CharField(max_length=200)
+    date = models.DateTimeField(auto_now_add=True)
 
-	def __str__(self):
-		return '%s %s' % (self.user, self.post)
+    def __str__(self):
+        return '%s %s' % (self.user, self.post)
 
 
 # Reaction model
 class Reaction(models.Model):
-	user =models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-	post =models.ForeignKey(Post, on_delete=models.CASCADE)
-	react =models.CharField(max_length=7, choices = emotion , default='none')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    react = models.CharField(max_length=7, choices=emotion, default='none')
 
-	def __str__(self):
-		return '%s %s %s' % (self.post , self.user ,self.react)
+    def __str__(self):
+        return '%s %s %s' % (self.post, self.user, self.react)
+
+
+# Reply model
+class Reply(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    content = models.CharField(max_length=200)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s %s' % (self.user, self.comment)
+
+
+
+# Subscribe model
+class Subscribe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=1)
+    cat = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s %s' % (self.user, self.cat)
+
+
+
+# Forbidden Word model
+class ForrbiddenWord(models.Model):
+    word = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.word

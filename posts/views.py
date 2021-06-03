@@ -15,14 +15,14 @@ def about(request):
 	cats = Category.objects.all()
 	return render(request,'posts/about.html',{'cats':cats})
 
-def listCat(request,catid):
+def list_cat(request,catid):
 	posts = Post.objects.filter(category_id=catid)
 	cats = Category.objects.all()
 	context={'posts':posts,'cats':cats}
 	return render(request,'posts/index.html', context)
 
 
-def addComment(request, postid):  # the worst function i had done shitty code i know
+def add_comment(request, postid):  # the worst function i had done shitty code i know
     if request.method == "POST":
         post = Post.objects.get(id=postid)
         uname = request.user  # we have to replace it with auth user
@@ -44,7 +44,7 @@ def addComment(request, postid):  # the worst function i had done shitty code i 
 
 
 # delete comment function
-def deletecomment(request, comid):
+def delete_comment(request, comid):
     comment = Comment.objects.get(id=comid)
     postid = comment.post_id
     if(request.user == comment.user or request.user.is_staff):
@@ -53,7 +53,7 @@ def deletecomment(request, comid):
 
 
 # get like data function
-def getLikeData(request):
+def get_like_data(request):
 	postId = request.GET['postId']
 	userId = request.user.id
 	print(userId)
