@@ -1,0 +1,335 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Mini Blog</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700|Playfair+Display:400,700,900" rel="stylesheet">
+
+        <link rel="stylesheet" href="{% static 'publicStatic/fonts/icomoon/style.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/magnific-popup.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/jquery-ui.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/owl.theme.default.min.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/bootstrap-datepicker.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/fonts/flaticon/font/flaticon.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/aos.css' %}">
+        <link rel="stylesheet" href="{% static 'publicStatic/css/style.css' %}">
+
+        <style>
+            .card-columns {
+                column-count: 2 !important;
+                }
+            .post-content-body{
+                position: relative;
+            }
+            .comment-body{
+                position: relative;
+            }
+            div.post, div.comment{
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                z-index: 1;
+            }
+            div.replyd{
+                position: absolute;
+                right: 30px;
+                top: 0px;
+                z-index: 1;
+            }
+            #like, #parent {
+                cursor: pointer;
+            }
+            a:hover {
+              background-color: white;
+              color: black !important;
+            }
+            #imgState{
+                position: relative;
+            }
+            .changeLike{
+                position: absolute;
+                right: 80px;
+                top: -20px;
+                z-index: 1;
+            }
+            .pagination li a {
+                width: 80px;
+                height: 50px;
+                border-color: #333;
+                color: #333 !important;
+            }
+            .pagination li a:hover {
+              background-color: #333 !important;
+              color: white !important;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div class="site-wrap">
+
+            <div class="site-mobile-menu">
+                <div class="site-mobile-menu-header">
+                    <div class="site-mobile-menu-close mt-3">
+                        <span class="icon-close2 js-menu-toggle"></span>
+                    </div>
+                </div>
+                <div class="site-mobile-menu-body"></div>
+            </div>
+
+            <header class="header-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+
+                                <a class="navbar-brand px-1" href="/posts">
+                                    <strong>Explore</strong>
+                                </a>
+
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#worldNav" aria-controls="worldNav" aria-expanded="true" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                                <div class="navbar-collapse collapse show" id="worldNav">
+                                    <div id="search-wrapper" class="ml-auto">
+                                        <form method="get" action="/posts/searchResult">
+                                            <input class="form-control mr-sm-2" type="text" placeholder="Search something..." name="requiredSearch">
+                                            <div id="close-icon"></div>
+                                            <input class="d-none" id="searchText" type="submit" value="">
+                                        </form>
+                                    </div>
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item active">
+                                            <a class="nav-link" href="/posts/">Home <span class="sr-only">(current)</span></a>
+                                        </li>
+                                        {%if request.user.is_staff%}
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="/ourBlog/admin">manage blog <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        {% elif request.user.is_authenticated %}
+                                            <li class="nav-item active">
+                                                <a class="nav-link" href="/posts/new">add post <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        {%endif%}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                                {% block category %}
+                                                    {%for category in categories%}
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="text-left">
+                                                                <a class="dropdown-item" href="/posts/listcat/{{category.id}}">{{category.name}}</a>
+                                                            </div>
+                                                            <button type="button" class="btn btn-outline-dark pw-2 text-right mt-1 ml-auto mr-3" id="subscribe{{category.id}}"data-toggle="button">
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    {%endfor%}
+                                                {% endblock %}
+
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white" href="/posts/about">About</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            {% if request.user.is_authenticated %}
+                                                <span class="nav-link text-white"><a href="/logout" class="text-white py-2 px-1">Logout</a></span>
+                                            {% else %}
+                                                <span class="nav-link text-white"><a href="/login" class="text-white">Login</a>/<a href="/register" class="text-white">Register</a></span>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {% block content %}
+            
+            {% endblock %}
+
+            <div class="site-footer">
+                <div class="container">
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <h3 class="footer-heading mb-4">About Us</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat reprehenderit magnam deleniti quasi saepe, consequatur atque sequi delectus dolore veritatis obcaecati quae, repellat eveniet omnis, voluptatem in. Soluta, eligendi, architecto.</p>
+                        </div>
+                        <div class="col-md-3 ml-auto">
+                            <!-- <h3 class="footer-heading mb-4">Navigation</h3> -->
+                            <ul class="list-unstyled float-left mr-5">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Advertise</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Subscribes</a></li>
+                            </ul>
+                            <ul class="list-unstyled float-left">
+                                <li><a href="#">Travel</a></li>
+                                <li><a href="#">Lifestyle</a></li>
+                                <li><a href="#">Sports</a></li>
+                                <li><a href="#">Nature</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+
+
+                            <div>
+                                <h3 class="footer-heading mb-4">Connect With Us</h3>
+                                <p>
+                                    <a href="#"><span class="icon-facebook pt-2 pr-2 pb-2 pl-0"></span></a>
+                                    <a href="#"><span class="icon-twitter p-2"></span></a>
+                                    <a href="#"><span class="icon-instagram p-2"></span></a>
+                                    <a href="#"><span class="icon-rss p-2"></span></a>
+                                    <a href="#"><span class="icon-envelope p-2"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="{% static 'publicStatic/js/jquery-3.3.1.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/jquery-migrate-3.0.1.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/jquery-ui.js' %}"></script>
+        <script src="{% static 'publicStatic/js/popper.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/owl.carousel.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/jquery.stellar.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/jquery.countdown.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/jquery.magnific-popup.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/bootstrap-datepicker.min.js' %}"></script>
+        <script src="{% static 'publicStatic/js/aos.js' %}"></script>
+        <script src="{% static 'publicStatic/js/main.js' %}"></script>
+        <script>
+            subscribes=[]
+            getFirstValue()
+            {%for category in categories%}
+            let subscribe{{category.id}} = document.querySelector("#subscribe{{category.id}}");
+            
+            subscribe{{category.id}}.addEventListener('click', (ev)=>{
+                console.log("inner0");
+                // getFirstValue(1, 0);
+                categoryNum={{category.id}}
+                refresh=0
+
+                const Http = new XMLHttpRequest();
+                const url=`/posts/subscribe?categoryNum=${categoryNum}&refresh=${refresh}`;
+                Http.open("GET", url);
+                Http.send();
+                console.log("hi");
+                console.log(subscribe{{category.id}});
+                Http.onreadystatechange = (e) => {
+                  // console.log(Http.response)
+                    if (Http.readyState==4 && Http.status==200)
+                    {
+                        let categoryState = Http.response
+                        categoryStateJson = JSON.parse(categoryState)
+                        categoryNums = categoryStateJson.categoryegoryNum
+                       
+                            console.log(categoryNums)
+                            // subscribes
+                            if(subscribe{{category.id}}.innerText.includes('+'))
+                            {
+                                subscribe{{category.id}}.innerText='-';
+                                subscribe{{category.id}}.style.background="black";
+                                subscribe{{category.id}}.style.color="white";
+                            }
+                            else if(subscribe{{category.id}}.innerText.includes('-'))
+                            {
+                                subscribe{{category.id}}.innerText='+';
+                                subscribe{{category.id}}.style.background="white";
+                                subscribe{{category.id}}.style.color="black";
+                            } 
+                        Http.abort();
+                    }
+                }
+
+
+                console.log("inner");
+            });
+            subscribes=subscribes.concat(subscribe{{category.id}});
+            // console.log(subscribes)
+            {% endfor %}
+
+
+            function getFirstValue(categoryNum=0, refresh=1)
+            {
+                const Http = new XMLHttpRequest();
+                const url=`/posts/subscribe?catNum=${categoryNum}&refresh=${refresh}`;
+                Http.open("GET", url);
+                Http.send();
+                Http.onreadystatechange = (e) => {
+                    if (Http.readyState==4 && Http.status==200)
+                    {
+                        let categoryState = Http.response
+                        categoryStateJson = JSON.parse(catState)
+                        categoryNums = categoryStateJson.categoryNum
+                        if(refresh==1)
+                        {
+                            for(let category=0; cat< categoryNums.length; cat++)
+                            {
+                                x=subscribes[categoryNums[category]-1]
+                                if(x.innerText.includes('+'))
+                                {
+                                    x.innerText='-'
+                                    x.style.background="black";
+                                    x.style.color="white";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            console.log(catNums)
+                            // subscribes
+                            // if("subscribe"+catNum.innerText=='+')
+                            // {
+                            //     "subscribe"+catNum.innerText='-'
+                            // }
+                            // else if("subscribe"+catNum.innerText=='-')
+                            // {
+                            //     "subscribe"+catNum.innerText='+'
+                            // } 
+                        }
+                        Http.abort();
+                    }
+                }
+            }
+            // $(document).ready(function(){
+            //     $(".post-content-body").hover(
+            //         function(){
+            //           $("div.post").show();
+            //         }
+            //         ,function(){
+            //             $("div.post").hide();
+            //         });     
+            // });
+        </script>
+
+        {% block scriptBlock %}
+        {% endblock %}
+    </body>
+</html>

@@ -24,8 +24,8 @@
                                     <span class="d-inline-block mt-1 text-muted"> category: <a href="/posts/listcat/{{post.category_id}}">{{post.category}}</a></span>
                                     <span class="d-inline-block  mt-1 text-muted"> 
                                         Tags: 
-                                    {% for tag in post.tag.all %}
-                                    <a href="/posts/listtag/{{tag.id}}">{{tag.tag}}</a>, 
+                                    {% for tag in post.tags.all %}
+                                    <a href="/posts/listtag/{{tag.id}}">{{tag.name}}</a>, 
                                     {% endfor %}
                                     </span>
                                 </div>
