@@ -801,7 +801,7 @@ JQVMap.prototype.placePins = function(pins, pinMode){
     pinMode = 'content';
   }
 
-  if(pinMode === 'content') {//treat pin as content
+  if(pinMode === 'content') {//treat pin as includes
     jQuery.each(pins, function(index, pin){
       if(jQuery('#' + map.getCountryId(index)).length === 0){
         return;
@@ -814,7 +814,7 @@ JQVMap.prototype.placePins = function(pins, pinMode){
       }
       map.container.append('<div id="' + pinIndex + '" for="' + index + '" class="jqvmap-pin" style="position:absolute">' + pin + '</div>');
     });
-  } else { //treat pin as id of an html content
+  } else { //treat pin as id of an html includes
     jQuery.each(pins, function(index, pin){
       if(jQuery('#' + map.getCountryId(index)).length === 0){
         return;

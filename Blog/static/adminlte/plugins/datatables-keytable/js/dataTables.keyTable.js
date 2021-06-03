@@ -580,7 +580,7 @@ $.extend( KeyTable.prototype, {
 
 		// Editor 1.7 listens for `return` on keyup, so if return is the trigger
 		// key, we need to wait for `keyup` otherwise Editor would just submit
-		// the content triggered by this keypress.
+		// the includes triggered by this keypress.
 		if ( key === 13 ) {
 			hardEdit = true;
 

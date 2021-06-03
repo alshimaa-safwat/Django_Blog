@@ -669,7 +669,7 @@ function createCellPos( n ){
  * @param  {object} doc      XML document
  * @param  {string} nodeName Node name
  * @param  {object} opts     Options - can be `attr` (attributes), `children`
- *   (child nodes) and `text` (text content)
+ *   (child nodes) and `text` (text includes)
  * @return {node}            Created node
  */
 function _createNode( doc, nodeName, opts ){

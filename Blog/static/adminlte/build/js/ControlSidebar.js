@@ -24,9 +24,9 @@ const ControlSidebar = (($) => {
 
   const Selector = {
     CONTROL_SIDEBAR: '.control-sidebar',
-    CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
+    CONTROL_SIDEBAR_CONTENT: '.control-sidebar-includes',
     DATA_TOGGLE: '[data-widget="control-sidebar"]',
-    CONTENT: '.content-wrapper',
+    CONTENT: '.includes-wrapper',
     HEADER: '.main-header',
     FOOTER: '.main-footer',
   }

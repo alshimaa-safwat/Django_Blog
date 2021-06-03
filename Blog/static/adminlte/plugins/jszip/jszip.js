@@ -79,12 +79,12 @@ exports.decode = function(input) {
     }
     if (totalLength % 1 !== 0) {
         // totalLength is not an integer, the length does not match a valid
-        // base64 content. That can happen if:
-        // - the input is not a base64 content
-        // - the input is *almost* a base64 content, with a extra chars at the
+        // base64 includes. That can happen if:
+        // - the input is not a base64 includes
+        // - the input is *almost* a base64 includes, with a extra chars at the
         //   beginning or at the end
         // - the input uses a base64 variant (base64url for example)
-        throw new Error("Invalid base64 input, bad content length.");
+        throw new Error("Invalid base64 input, bad includes length.");
     }
     var output;
     if (support.uint8array) {
@@ -146,7 +146,7 @@ function CompressedObject(compressedSize, uncompressedSize, crc32, compression, 
 
 CompressedObject.prototype = {
     /**
-     * Create a worker to get the uncompressed content.
+     * Create a worker to get the uncompressed includes.
      * @return {GenericWorker} the worker.
      */
     getContentWorker : function () {
@@ -163,7 +163,7 @@ CompressedObject.prototype = {
         return worker;
     },
     /**
-     * Create a worker to get the compressed content.
+     * Create a worker to get the compressed includes.
      * @return {GenericWorker} the worker.
      */
     getCompressedWorker : function () {
@@ -177,12 +177,12 @@ CompressedObject.prototype = {
 };
 
 /**
- * Chain the given worker with other workers to compress the content with the
+ * Chain the given worker with other workers to compress the includes with the
  * given compresion.
  * @param {GenericWorker} uncompressedWorker the worker to pipe.
  * @param {Object} compression the compression object.
  * @param {Object} compressionOptions the options to use when compressing.
- * @return {GenericWorker} the new worker compressing the content.
+ * @return {GenericWorker} the new worker compressing the includes.
  */
 CompressedObject.createWorkerFrom = function (uncompressedWorker, compression, compressionOptions) {
     return uncompressedWorker
@@ -485,7 +485,7 @@ var generateDosExternalFileAttr = function (dosPermissions, isDir) {
 /**
  * Generate the various parts used in the construction of the final zip file.
  * @param {Object} streamInfo the hash with informations about the compressed file.
- * @param {Boolean} streamedContent is the content streamed ?
+ * @param {Boolean} streamedContent is the includes streamed ?
  * @param {Boolean} streamingEnded is the stream finished ?
  * @param {number} offset the current offset from the start of the zip file.
  * @param {String} platform let's pretend we are this platform (change platform dependents fields)
@@ -518,7 +518,7 @@ var generateZipParts = function(streamInfo, streamedContent, streamingEnded, off
         uncompressedSize : 0
     };
 
-    // if the content is streamed, the sizes/crc32 are only available AFTER
+    // if the includes is streamed, the sizes/crc32 are only available AFTER
     // the end of the stream.
     if (!streamedContent || streamingEnded) {
         dataInfo.crc32 = streamInfo['crc32'];
@@ -593,7 +593,7 @@ var generateZipParts = function(streamInfo, streamedContent, streamingEnded, off
             "\x75\x70" +
             // size
             decToHex(unicodePathExtraField.length, 2) +
-            // content
+            // includes
             unicodePathExtraField;
     }
 
@@ -612,7 +612,7 @@ var generateZipParts = function(streamInfo, streamedContent, streamingEnded, off
             "\x75\x63" +
             // size
             decToHex(unicodeCommentExtraField.length, 2) +
-            // content
+            // includes
             unicodeCommentExtraField;
     }
 
@@ -727,7 +727,7 @@ var generateDataDescriptors = function (streamInfo) {
 
 /**
  * A worker to concatenate other workers to create a zip file.
- * @param {Boolean} streamFiles `true` to stream the content of the files,
+ * @param {Boolean} streamFiles `true` to stream the includes of the files,
  * `false` to accumulate it.
  * @param {String} comment the comment to use.
  * @param {String} platform the platform to use, "UNIX" or "DOS".
@@ -743,14 +743,14 @@ function ZipFileWorker(streamFiles, comment, platform, encodeFileName) {
     this.zipPlatform = platform;
     // the function to encode file names and comments.
     this.encodeFileName = encodeFileName;
-    // Should we stream the content of the files ?
+    // Should we stream the includes of the files ?
     this.streamFiles = streamFiles;
-    // If `streamFiles` is false, we will need to accumulate the content of the
-    // files to calculate sizes / crc32 (and write them *before* the content).
+    // If `streamFiles` is false, we will need to accumulate the includes of the
+    // files to calculate sizes / crc32 (and write them *before* the includes).
     // This boolean indicates if we are accumulating chunks (it will change a lot
     // during the lifetime of this worker).
     this.accumulate = false;
-    // The buffer receiving chunks when accumulating content.
+    // The buffer receiving chunks when accumulating includes.
     this.contentBuffer = [];
     // The list of generated directory records.
     this.dirRecords = [];
@@ -802,7 +802,7 @@ ZipFileWorker.prototype.openedSource = function (streamInfo) {
 
     var streamedContent = this.streamFiles && !streamInfo['file'].dir;
 
-    // don't stream folders (because they don't have any content)
+    // don't stream folders (because they don't have any includes)
     if(streamedContent) {
         var record = generateZipParts(streamInfo, streamedContent, false, this.currentSourceOffset, this.zipPlatform, this.encodeFileName);
         this.push({
@@ -832,8 +832,8 @@ ZipFileWorker.prototype.closedSource = function (streamInfo) {
             meta : {percent:100}
         });
     } else {
-        // the content wasn't streamed, we need to push everything now
-        // first the file record, then the content
+        // the includes wasn't streamed, we need to push everything now
+        // first the file record, then the includes
         this.push({
             data : record.fileRecord,
             meta : {percent:0}
@@ -1281,7 +1281,7 @@ module.exports = {
      */
     isNode : typeof Buffer !== "undefined",
     /**
-     * Create a new nodejs Buffer from an existing content.
+     * Create a new nodejs Buffer from an existing includes.
      * @param {Object} data the data to pass to the constructor.
      * @param {String} encoding the encoding to use.
      * @return {Buffer} a new Buffer.
@@ -1404,7 +1404,7 @@ var fileAdd = function(name, data, originalOptions) {
     }
 
     /*
-     * Convert content to fit.
+     * Convert includes to fit.
      */
 
     var zipObjectContent = null;
@@ -2128,7 +2128,7 @@ var GenericWorker = require('./GenericWorker');
 var DEFAULT_BLOCK_SIZE = 16 * 1024;
 
 /**
- * A worker that reads a content and emits chunks.
+ * A worker that reads a includes and emits chunks.
  * @constructor
  * @param {Promise} dataP the promise of the data to split
  */
@@ -2522,9 +2522,9 @@ if (support.nodestream) {
  * example, it's easier to work with an U8intArray and finally do the
  * ArrayBuffer/Blob conversion.
  * @param {String} type the name of the final type
- * @param {String|Uint8Array|Buffer} content the content to transform
- * @param {String} mimeType the mime type of the content, if applicable.
- * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob} the content in the right format.
+ * @param {String|Uint8Array|Buffer} content the includes to transform
+ * @param {String} mimeType the mime type of the includes, if applicable.
+ * @return {String|Uint8Array|ArrayBuffer|Buffer|Blob} the includes in the right format.
  */
 function transformZipOutput(type, content, mimeType) {
     switch(type) {
@@ -2569,7 +2569,7 @@ function concat (type, dataArray) {
 }
 
 /**
- * Listen a StreamHelper, accumulate its content and concatenate it into a
+ * Listen a StreamHelper, accumulate its includes and concatenate it into a
  * complete block.
  * @param {StreamHelper} helper the helper to use.
  * @param {Function} updateCallback a callback called on each update. Called
@@ -2612,7 +2612,7 @@ function accumulate(helper, updateCallback) {
  * @constructor
  * @param {Worker} worker the worker to wrap
  * @param {String} outputType the type of data expected by the use
- * @param {String} mimeType the mime type of the content, if applicable.
+ * @param {String} mimeType the mime type of the includes, if applicable.
  */
 function StreamHelper(worker, outputType, mimeType) {
     var internalType = outputType;
@@ -2646,7 +2646,7 @@ function StreamHelper(worker, outputType, mimeType) {
 
 StreamHelper.prototype = {
     /**
-     * Listen a StreamHelper, accumulate its content and concatenate it into a
+     * Listen a StreamHelper, accumulate its includes and concatenate it into a
      * complete block.
      * @param {Function} updateCb the update callback.
      * @return Promise the promise for the accumulation.
@@ -3059,8 +3059,8 @@ function string2binary(str) {
 }
 
 /**
- * Create a new blob with the given content and the given type.
- * @param {String|ArrayBuffer} part the content to put in the blob. DO NOT use
+ * Create a new blob with the given includes and the given type.
+ * @param {String|ArrayBuffer} part the includes to put in the blob. DO NOT use
  * an Uint8Array because the stock browser of android 4 won't accept it (it
  * will be silently converted to a string, "[object Uint8Array]").
  *
@@ -3447,12 +3447,12 @@ exports.extend = function() {
 };
 
 /**
- * Transform arbitrary content into a Promise.
- * @param {String} name a name for the content being processed.
- * @param {Object} inputData the content to process.
- * @param {Boolean} isBinary true if the content is not an unicode string
- * @param {Boolean} isOptimizedBinaryString true if the string content only has one byte per character.
- * @param {Boolean} isBase64 true if the string content is encoded with base64.
+ * Transform arbitrary includes into a Promise.
+ * @param {String} name a name for the includes being processed.
+ * @param {Object} inputData the includes to process.
+ * @param {Boolean} isBinary true if the includes is not an unicode string
+ * @param {Boolean} isOptimizedBinaryString true if the string includes only has one byte per character.
+ * @param {Boolean} isBase64 true if the string includes is encoded with base64.
  * @return {Promise} a promise in a format usable by JSZip.
  */
 exports.prepareContent = function(name, inputData, isBinary, isOptimizedBinaryString, isBase64) {
@@ -3669,7 +3669,7 @@ ZipEntries.prototype = {
     readEndOfCentral: function() {
         var offset = this.reader.lastIndexOfSignature(sig.CENTRAL_DIRECTORY_END);
         if (offset < 0) {
-            // Check if the content is a truncated zip or complete garbage.
+            // Check if the includes is a truncated zip or complete garbage.
             // A "LOCAL_FILE_HEADER" is not required at the beginning (auto
             // extractible zip for example) but it can give a good hint.
             // If an ajax request was used without responseType, we will also
@@ -3852,7 +3852,7 @@ ZipEntry.prototype = {
         // the internet.
         //
         // I think I see the logic here : the central directory is used to display
-        // content and the local directory is used to extract the files. Mixing / and \
+        // includes and the local directory is used to extract the files. Mixing / and \
         // may be used to display \ to windows users and use / when extracting the files.
         // Unfortunately, this lead also to some issues : http://seclists.org/fulldisclosure/2009/Sep/394
         this.fileNameLength = reader.readInt(2);
@@ -4102,7 +4102,7 @@ var ZipObject = function(name, data, options) {
 
 ZipObject.prototype = {
     /**
-     * Create an internal stream for the content of this object.
+     * Create an internal stream for the includes of this object.
      * @param {String} type the type of each chunk.
      * @return StreamHelper the stream.
      */
@@ -4136,7 +4136,7 @@ ZipObject.prototype = {
     },
 
     /**
-     * Prepare the content in the asked type.
+     * Prepare the includes in the asked type.
      * @param {String} type the type of the result.
      * @param {Function} onUpdate a function to call on each internal update.
      * @return Promise the promise of the result.
@@ -4146,7 +4146,7 @@ ZipObject.prototype = {
     },
 
     /**
-     * Prepare the content as a nodejs stream.
+     * Prepare the includes as a nodejs stream.
      * @param {String} type the type of each chunk.
      * @param {Function} onUpdate a function to call on each internal update.
      * @return Stream the stream.
@@ -4156,7 +4156,7 @@ ZipObject.prototype = {
     },
 
     /**
-     * Return a worker for the compressed content.
+     * Return a worker for the compressed includes.
      * @private
      * @param {Object} compression the compression object to use.
      * @param {Object} compressionOptions the options to use when compressing.
@@ -4177,7 +4177,7 @@ ZipObject.prototype = {
         }
     },
     /**
-     * Return a worker for the decompressed content.
+     * Return a worker for the decompressed includes.
      * @private
      * @return Worker the worker.
      */
@@ -5039,7 +5039,7 @@ var toString = Object.prototype.toString;
  * - `raw` (Boolean) - do raw inflate
  * - `to` (String) - if equal to 'string', then result will be converted
  *   from utf8 to utf16 (javascript) string. When string output requested,
- *   chunk length can differ from `chunkSize`, depending on content.
+ *   chunk length can differ from `chunkSize`, depending on includes.
  *
  * By default, when no options set, autodetect deflate/gzip data format via
  * wrapper header.
@@ -5329,7 +5329,7 @@ Inflate.prototype.onEnd = function (status) {
  *   negative windowBits implicitly.
  * - `to` (String) - if equal to 'string', then result will be converted
  *   from utf8 to utf16 (javascript) string. When string output requested,
- *   chunk length can differ from `chunkSize`, depending on content.
+ *   chunk length can differ from `chunkSize`, depending on includes.
  *
  *
  * ##### Example:
@@ -5379,7 +5379,7 @@ function inflateRaw(input, options) {
  * - options (Object): zlib inflate options.
  *
  * Just shortcut to [[inflate]], because it autodetects format
- * by header.content. Done for convenience.
+ * by header.includes. Done for convenience.
  **/
 
 

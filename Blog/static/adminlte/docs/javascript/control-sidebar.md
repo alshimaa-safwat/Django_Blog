@@ -13,7 +13,7 @@ This plugin can be activated as a jQuery plugin or using the data api. To activa
 ```html
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
-  <!-- Control sidebar content goes here -->
+  <!-- Control sidebar includes goes here -->
 </aside>
 <!-- /.control-sidebar -->
 ```

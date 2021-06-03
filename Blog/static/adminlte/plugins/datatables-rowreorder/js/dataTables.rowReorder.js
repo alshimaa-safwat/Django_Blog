@@ -598,7 +598,7 @@ $.extend( RowReorder.prototype, {
 
 	/**
 	 * Move the window and DataTables scrolling during a drag to scroll new
-	 * content into view.
+	 * includes into view.
 	 *
 	 * This matches the `_shiftScroll` method used in AutoFill, but only
 	 * horizontal scrolling is considered here.

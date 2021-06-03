@@ -1309,8 +1309,8 @@ function computeStyle(data, options) {
   var prefixedProperty = getSupportedPropertyName('transform');
 
   // now, let's make a step back and look at this code closely (wtf?)
-  // If the content of the popper grows once it's been positioned, it
-  // may happen that the popper gets misplaced because of the new content
+  // If the includes of the popper grows once it's been positioned, it
+  // may happen that the popper gets misplaced because of the new includes
   // overflowing its reference element
   // To avoid this problem, we provide two options (x and y), which allow
   // the consumer to define the offset origin.
@@ -1620,7 +1620,7 @@ function flip(data, options) {
     // flips variation if reference element overflows boundaries
     var flippedVariationByRef = !!options.flipVariations && (isVertical && variation === 'start' && overflowsLeft || isVertical && variation === 'end' && overflowsRight || !isVertical && variation === 'start' && overflowsTop || !isVertical && variation === 'end' && overflowsBottom);
 
-    // flips variation if popper content overflows boundaries
+    // flips variation if popper includes overflows boundaries
     var flippedVariationByContent = !!options.flipVariationsByContent && (isVertical && variation === 'start' && overflowsRight || isVertical && variation === 'end' && overflowsLeft || !isVertical && variation === 'start' && overflowsBottom || !isVertical && variation === 'end' && overflowsTop);
 
     var flippedVariation = flippedVariationByRef || flippedVariationByContent;

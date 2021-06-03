@@ -2132,8 +2132,8 @@
                 var _classNameViewportNativeScrollbarsInvisible = _classNameViewportElement + '-native-scrollbars-invisible';
                 var _classNameViewportNativeScrollbarsOverlaid = _classNameViewportElement + '-native-scrollbars-overlaid';
                 var _classNameContentElement = _cassNamesPrefix + 'content';
-                var _classNameContentArrangeElement = _cassNamesPrefix + 'content-arrange';
-                var _classNameContentGlueElement = _cassNamesPrefix + 'content-glue';
+                var _classNameContentArrangeElement = _cassNamesPrefix + 'includes-arrange';
+                var _classNameContentGlueElement = _cassNamesPrefix + 'includes-glue';
                 var _classNameSizeAutoObserverElement = _cassNamesPrefix + 'size-auto-observer';
                 var _classNameResizeObserverElement = _cassNamesPrefix + 'resize-observer';
                 var _classNameResizeObserverItemElement = _cassNamesPrefix + 'resize-observer-item';
@@ -2198,9 +2198,9 @@
                 var _sizeObserverElement;               //observes size and padding changes
                 var _paddingElement;                    //manages the padding
                 var _viewportElement;                   //is the viewport of our scrollbar model
-                var _contentElement;                    //the element which holds the content
-                var _contentArrangeElement;             //is needed for correct sizing of the content element (only if native scrollbars are overlays)
-                var _contentGlueElement;                //has always the size of the content element
+                var _contentElement;                    //the element which holds the includes
+                var _contentArrangeElement;             //is needed for correct sizing of the includes element (only if native scrollbars are overlays)
+                var _contentGlueElement;                //has always the size of the includes element
                 var _textareaCoverElement;              //only applied if target is a textarea element. Used for correct size calculation and for prevention of uncontrolled scrolling
                 var _scrollbarCornerElement;
                 var _scrollbarHorizontalElement;
@@ -2570,7 +2570,7 @@
                 //==== Mutation Observers ====//
 
                 /**
-                 * Creates MutationObservers for the host and content Element if they are supported.
+                 * Creates MutationObservers for the host and includes Element if they are supported.
                  */
                 function createMutationObservers() {
                     if (_supportMutationObserver) {
@@ -2880,8 +2880,8 @@
                 }
 
                 /**
-                 * Returns true if the content size was changed since the last time this method was called.
-                 * @returns {boolean} True if the content size was changed, false otherwise.
+                 * Returns true if the includes size was changed since the last time this method was called.
+                 * @returns {boolean} True if the includes size was changed, false otherwise.
                  */
                 function updateAutoContentSizeChanged() {
                     if (_sleeping)
@@ -2973,9 +2973,9 @@
                 }
 
                 /**
-                 * Checks is a CSS Property of a child element is affecting the scroll size of the content.
+                 * Checks is a CSS Property of a child element is affecting the scroll size of the includes.
                  * @param propertyName The CSS property name.
-                 * @returns {boolean} True if the property is affecting the content scroll size, false otherwise.
+                 * @returns {boolean} True if the property is affecting the includes scroll size, false otherwise.
                  */
                 function isSizeAffectingCSSProperty(propertyName) {
                     if (!_initialized)
@@ -3619,14 +3619,14 @@
                     contentElementCSS = {};
                     contentGlueElementCSS = {};
 
-                    //if [content(host) client / scroll size, or target element direction, or content(host) max-sizes] changed, or force is true
+                    //if [includes(host) client / scroll size, or target element direction, or includes(host) max-sizes] changed, or force is true
                     if (hostSizeChanged || contentSizeChanged || textareaSizeChanged || cssDirectionChanged || boxSizingChanged || paddingAbsoluteChanged || widthAutoChanged || widthAuto || heightAutoChanged || heightAuto || cssMaxValue.c || ignoreOverlayScrollbarHidingChanged || overflowBehaviorChanged || clipAlwaysChanged || resizeChanged || scrollbarsVisibilityChanged || scrollbarsAutoHideChanged || scrollbarsDragScrollingChanged || scrollbarsClickScrollingChanged || textareaDynWidthChanged || textareaDynHeightChanged || textareaAutoWrappingChanged) {
                         var strOverflow = 'overflow';
                         var strOverflowX = strOverflow + '-x';
                         var strOverflowY = strOverflow + '-y';
                         var strHidden = 'hidden';
                         var strVisible = 'visible';
-                        //decide whether the content overflow must get hidden for correct overflow measuring, it !MUST! be always hidden if the height is auto
+                        //decide whether the includes overflow must get hidden for correct overflow measuring, it !MUST! be always hidden if the height is auto
                         var hideOverflow4CorrectMeasuring = _restrictedMeasuring ?
                         (_nativeScrollbarIsOverlaid.x || _nativeScrollbarIsOverlaid.y) || //it must be hidden if native scrollbars are overlaid
                         (_viewportSize.w < _nativeScrollbarMinSize.y || _viewportSize.h < _nativeScrollbarMinSize.x) || //it must be hidden if host-element is too small
@@ -3645,7 +3645,7 @@
 
                         //measure several sizes:
                         var contentMeasureElement = getContentMeasureElement();
-                        //in Firefox content element has to have overflow hidden, else element margins aren't calculated properly, this element prevents this bug, but only if scrollbars aren't overlaid
+                        //in Firefox includes element has to have overflow hidden, else element margins aren't calculated properly, this element prevents this bug, but only if scrollbars aren't overlaid
                         var contentMeasureElementGuaranty = _restrictedMeasuring && !hideOverflow4CorrectMeasuring ? _viewportElementNative : contentMeasureElement;
                         var contentSize = {
                             //use clientSize because natively overlaidScrollbars add borders
@@ -3667,7 +3667,7 @@
                         var hostSize = getHostSize();
                         var contentGlueSize = {
                             //client/scrollSize + AbsolutePadding -> because padding is only applied to the paddingElement if its absolute, so you have to add it manually
-                            //hostSize is clientSize -> so padding should be added manually, right? FALSE! Because content glue is inside hostElement, so we don't have to worry about padding
+                            //hostSize is clientSize -> so padding should be added manually, right? FALSE! Because includes glue is inside hostElement, so we don't have to worry about padding
                             w: MATH.max((widthAuto ? contentSize.w : scrollSize.w) + paddingAbsoluteX, hostSize.w),
                             h: MATH.max((heightAuto ? contentSize.h : scrollSize.h) + paddingAbsoluteY, hostSize.h)
                         };
@@ -3705,18 +3705,18 @@
                                 if (!autoSize || (!autoSize && border.c))
                                     contentGlueElementCSS[strWH] = hostSize[wh] - (_isBorderBox ? 0 : paddingSize + borderSize) - 1 - marginSize;
 
-                                //if size is auto and host is same size as max size, make content glue size +1 to make sure size changes will be detected
+                                //if size is auto and host is same size as max size, make includes glue size +1 to make sure size changes will be detected
                                 if (autoSize && cssMaxValue['c' + wh] && cssMaxValue['i' + wh] === maxSize)
                                     contentGlueElementCSS[strWH] = maxSize + (_isBorderBox ? 0 : paddingSize) + 1;
 
-                                //if size is auto and host is smaller than size as min size, make content glue size -1 to make sure size changes will be detected (this is only needed if padding is 0)
+                                //if size is auto and host is smaller than size as min size, make includes glue size -1 to make sure size changes will be detected (this is only needed if padding is 0)
                                 if (autoSize && (contentSize[wh] < _viewportSize[wh]) && (horizontal && _isTextarea ? !textareaAutoWrapping : true)) {
                                     if (_isTextarea)
                                         textareaCoverCSS[strWH] = parseToZeroOrNumber(_textareaCoverElement.css(strWH)) - 1;
                                     contentGlueElementCSS[strWH] -= 1;
                                 }
 
-                                //make sure content glue size is at least 1
+                                //make sure includes glue size is at least 1
                                 if (contentSize[wh] > 0)
                                     contentGlueElementCSS[strWH] = MATH.max(1, contentGlueElementCSS[strWH]);
                             };
@@ -3732,7 +3732,7 @@
                         if (widthAuto && !_isBorderBox && !_mutationObserversConnected)
                             contentElementCSS[_strFloat] = 'none';
 
-                        //apply and reset content style
+                        //apply and reset includes style
                         _contentElement.css(contentElementCSS);
                         contentElementCSS = {};
 
@@ -3964,7 +3964,7 @@
                         }
 
                         //change to direction RTL and width auto Bugfix in Webkit
-                        //without this fix, the DOM still thinks the scrollbar is LTR and thus the content is shifted to the left
+                        //without this fix, the DOM still thinks the scrollbar is LTR and thus the includes is shifted to the left
                         contentElementCSS = {};
                         if (cssDirectionChanged || widthAutoChanged || heightAutoChanged) {
                             if (_isRTL && widthAuto) {
@@ -4168,7 +4168,7 @@
 
                     //fix body min size
                     if (_isBody && _bodyMinSizeCache && (_hasOverflowCache.c || _bodyMinSizeCache.c)) {
-                        //its possible that no min size was measured until now, because the content arrange element was just added now, in this case, measure now the min size.
+                        //its possible that no min size was measured until now, because the includes arrange element was just added now, in this case, measure now the min size.
                         if (!_bodyMinSizeCache.f)
                             bodyMinSizeChanged();
                         if (_nativeScrollbarIsOverlaid.y && _hasOverflowCache.x)
@@ -4285,7 +4285,7 @@
                             //add the correct class to the target element
                             addClass(_targetElement, _isTextarea ? classNameTextareaElementFull : _classNameHostElement);
 
-                            //wrap the content into the generated elements to create the required DOM
+                            //wrap the includes into the generated elements to create the required DOM
                             _hostElement.wrapInner(_contentElement)
                                 .wrapInner(_viewportElement)
                                 .wrapInner(_paddingElement)
@@ -4334,7 +4334,7 @@
                             //remove size observer
                             remove(_sizeObserverElement);
                             
-                            //unwrap the content to restore DOM
+                            //unwrap the includes to restore DOM
                             _contentElement.contents()
                                 .unwrap()
                                 .unwrap()
@@ -4941,7 +4941,7 @@
                     var translateValue;
 
                     //DONT use the variable '_contentScrollSizeCache[scrollbarVars._w_h]' instead of '_viewportElement[0]['scroll' + scrollbarVars._Width_Height]'
-                    // because its a bit behind during the small delay when content size updates
+                    // because its a bit behind during the small delay when includes size updates
                     //(delay = mutationObserverContentLag, if its 0 then this var could be used)
                     var maxScroll = (_viewportElementNative[_strScroll + scrollbarVars._Width_Height] - _viewportElementNative['client' + scrollbarVars._Width_Height]) * (_rtlScrollBehavior.n && isRTLisHorizontal ? -1 : 1); //* -1 if rtl scroll max is negative
                     var getScrollRatio = function(base) {
@@ -5335,7 +5335,7 @@
                 }
 
                 /**
-                 * Gets the element which is used to measure the content size.
+                 * Gets the element which is used to measure the includes size.
                  * @returns {*} TextareaCover if target element is textarea else the ContentElement.
                  */
                 function getContentMeasureElement() {
@@ -5345,8 +5345,8 @@
                 /**
                  * Generates a string which represents a HTML div with the given classes or attributes.
                  * @param classesOrAttrs The class of the div as string or a object which represents the attributes of the div. (The class attribute can also be written as "className".)
-                 * @param content The content of the div as string.
-                 * @returns {string} The concated string which represents a HTML div and its content.
+                 * @param content The includes of the div as string.
+                 * @returns {string} The concated string which represents a HTML div and its includes.
                  */
                 function generateDiv(classesOrAttrs, content) {
                     return '<div ' + (classesOrAttrs ? type(classesOrAttrs) == TYPES.s ?
@@ -5510,9 +5510,9 @@
                  * This method should only be called if a update is 100% required.
                  * @param force True if every property shall be updated and the cache shall be ignored.
                  * !INTERNAL USAGE! : force can be a string "auto", "sync" or "zoom" too
-                 * if "auto" then before a real update the content size and host element attributes gets checked, and if they changed only then the update method will be called.
+                 * if "auto" then before a real update the includes size and host element attributes gets checked, and if they changed only then the update method will be called.
                  * if "sync" then the async update process (MutationObserver or UpdateLoop) gets synchronized and a corresponding update takes place if one was needed due to pending changes.
-                 * if "zoom" then a update takes place where it's assumed that content and host size changed
+                 * if "zoom" then a update takes place where it's assumed that includes and host size changed
                  * @returns {boolean|undefined} 
                  * If force is "sync" then a boolean is returned which indicates whether a update was needed due to pending changes.
                  * If force is "auto" then a boolean is returned whether a update was needed due to attribute or size changes.
@@ -6132,7 +6132,7 @@
                 /**
                  * Returns all relevant elements.
                  * @param elementName The name of the element which shall be returned.
-                 * @returns {{target: *, host: *, padding: *, viewport: *, content: *, scrollbarHorizontal: {scrollbar: *, track: *, handle: *}, scrollbarVertical: {scrollbar: *, track: *, handle: *}, scrollbarCorner: *} | *}
+                 * @returns {{target: *, host: *, padding: *, viewport: *, includes: *, scrollbarHorizontal: {scrollbar: *, track: *, handle: *}, scrollbarVertical: {scrollbar: *, track: *, handle: *}, scrollbarCorner: *} | *}
                  */
                 _base.getElements = function (elementName) {
                     var obj = {
@@ -6332,7 +6332,7 @@
                      *      <div class="os-resize-observer-host"></div>
                      *      <div class="os-padding">
                      *          <div class="os-viewport">
-                     *              <div class="os-content"></div>
+                     *              <div class="os-includes"></div>
                      *          </div>
                      *      </div>
                      *      <div class="os-scrollbar os-scrollbar-horizontal ">
@@ -6352,7 +6352,7 @@
                      * 
                      * On a Textarea Element The if checks only whether:
                      * - the targetElement has the class "os-textarea" 
-                     * - the targetElement is inside a element with the class "os-content" 
+                     * - the targetElement is inside a element with the class "os-includes"
                      * 
                      * If that's the case, its assumed the DOM has already the following structure:
                      * (The ".os-textarea" (textarea) element is the targetElement)
@@ -6361,7 +6361,7 @@
                      *      <div class="os-resize-observer-host"></div>
                      *      <div class="os-padding os-text-inherit">
                      *          <div class="os-viewport os-text-inherit">
-                     *              <div class="os-content os-text-inherit">
+                     *              <div class="os-includes os-text-inherit">
                      *                  <div class="os-textarea-cover"></div>
                      *                  <textarea class="os-textarea os-text-inherit"></textarea>
                      *              </div>
@@ -6441,7 +6441,7 @@
                             _viewportElementNative.focus();
                             
                             /* the tabindex has to be removed due to;
-                             * If you set the tabindex attribute on an <div>, then its child content cannot be scrolled with the arrow keys unless you set tabindex on the content, too
+                             * If you set the tabindex attribute on an <div>, then its child includes cannot be scrolled with the arrow keys unless you set tabindex on the includes, too
                              * https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
                              */
                             setupResponsiveEventListener(_viewportElement, _strMouseTouchDownEvent, bodyMouseTouchDownListener, false, true);
