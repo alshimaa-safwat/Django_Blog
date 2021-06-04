@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'widget_tweaks'
 ]
-CRISPY_TEMPLATE_PACK='bootstrap4'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
-        'USER': 'django',
-        'PASSWORD': 'Password123#@!'
+        'USER': 'root',
+        'PASSWORD': 'root'
     }
 }
 
@@ -136,3 +136,4 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login'
