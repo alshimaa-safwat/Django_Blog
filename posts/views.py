@@ -91,7 +91,7 @@ def add_reply(request, comid):
                 con = con.replace(word.word, rep)
             rep = Reply(user=uname, comment=comment, content=con)
             rep.save()
-        return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
+        return HttpResponseRedirect('/posts/'+str(comment.post_id))
 
 
 def delete_reply(request, repid):
@@ -99,7 +99,7 @@ def delete_reply(request, repid):
     comment = Comment.objects.get(id=reply.comment_name_id)
     if(request.user == reply.user or request.user.is_staff):
         reply.delete()
-    return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
+    return HttpResponseRedirect('/posts/'+str(comment.post_id))
 
 
 def add_tag(request):
@@ -205,7 +205,7 @@ def home_page(request):
     page = paginator.page(page_number)
     for post in posts:
         dislikes = Reaction.objects.filter(
-            react="dislike", post_name=post.id).count()
+            react="dislike", post=post.id).count()
         if dislikes == 10:
             post.delete()
     categories = Category.objects.all()

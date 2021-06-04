@@ -18,7 +18,7 @@
                                 <p class="text-muted m-0"><small>{{post.date|naturaltime}}</small></p>
                                 
                                 <h2><a href="/posts/{{post.id}}"><strong>{{post.title}}</strong></a></h2>
-                                <p class="card-text text-justify">{{post.abstractBody}}..</p>
+                                <p class="card-text text-justify">{{post.excerpt}}</p>
                                 <div class="post-meta align-items-center text-left clearfix">
                                     <span class="d-inline-block mt-1 text-d text-muted">By <a href="/posts/showuser/{{post.author_id}}">{{post.author}}</a></span>
                                     <span class="d-inline-block mt-1 text-muted"> category: <a href="/posts/listcat/{{post.category_id}}">{{post.category}}</a></span>

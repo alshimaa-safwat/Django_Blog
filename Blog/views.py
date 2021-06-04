@@ -42,6 +42,7 @@ def edit_word(request, id):
         context = {'badWord_form': bad_word_form}
         return render(request, 'admin/words/createBadWord.html', context)
 
+
 def get_dashboard(request):
     return render(request, 'admin/adminlte.html')
 
@@ -179,9 +180,12 @@ def delete_post(request, id):
 
 def add_post(request):
     if request.method == "POST":
-        post_form = CreatePostForm(request.POST)
-        if post_form.is_valid():
-            post_form.save()
+        post = CreatePostForm(request.POST, request.FILES)
+        if post.is_valid():
+            new_post = post.save(commit=False)
+            new_post.author = request.user
+            new_post.thumbnail = request.FILES.get('thumbnail')
+            new_post.save()
             return HttpResponseRedirect("/dashboard/posts")
     else:
         post_form = CreatePostForm()
@@ -190,13 +194,17 @@ def add_post(request):
 
 
 def edit_post(request, id):
-    post_form = Post.objects.get(id=id)
+    post = Post.objects.get(id=id)
     if request.method == "POST":
-        post_form = CreatePostForm(request.POST, instance=post_form)
-        if post_form.is_valid():
-            post_form.save()
+        post = CreatePostForm(request.POST, request.FILES, instance=post)
+        if post.is_valid():
+            new_post = post.save(commit=False)
+            new_post.author = request.user
+            if(request.FILES.get('thumbnail') != None):
+                new_post.thumbnail = request.FILES.get('thumbnail')
+            new_post.save()
             return HttpResponseRedirect("/dashboard/posts")
     else:
-        post_form = CreatePostForm(instance=post_form)
+        post_form = CreatePostForm(instance=post)
         context = {'post_form': post_form}
         return render(request, 'admin/posts/createPost.html', context)
