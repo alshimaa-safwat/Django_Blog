@@ -32,8 +32,8 @@ def get_subscribe_data(request):
                 cato = Category.objects.get(id=catNum)
                 subject = 'category subscription'
                 message = 'u have subscibed in :' + cato.name + \
-                    ' use this url to visit this category http://127.0.0.1:8000/posts/listcat/' + \
-                    str(cato.id)
+                          ' use this url to visit this category http://127.0.0.1:8000/posts/listcat/' + \
+                          str(cato.id)
                 recepient = user.email
                 send_mail(subject, message, 'osamaeltayar011100',
                           [recepient], fail_silently=False)
@@ -63,15 +63,15 @@ def add_Comment(request, postid):  # the worst function i had done shitty code i
             comm = Comment(post=post, user=uname, content=con)
             comm.save()
 
-        return HttpResponseRedirect('/posts/'+postid)
+        return HttpResponseRedirect('/posts/' + postid)
 
 
 def delete_comment(request, comid):
     comment = Comment.objects.get(id=comid)
     postid = comment.post_id
-    if(request.user == comment.user or request.user.is_staff):
+    if (request.user == comment.user or request.user.is_staff):
         comment.delete()
-    return HttpResponseRedirect('/posts/'+str(postid))
+    return HttpResponseRedirect('/posts/' + str(postid))
 
 
 def add_reply(request, comid):
@@ -81,7 +81,7 @@ def add_reply(request, comid):
         con = request.POST.get('message')
         mptrn = r"^[\S][\S ]+$"
         result = re.match(mptrn, con)
-        if(result):
+        if (result):
             words = ForbiddenWord.objects.all()
             for word in words:
                 rep = ""
@@ -91,15 +91,17 @@ def add_reply(request, comid):
                 con = con.replace(word.word, rep)
             rep = Reply(user=uname, comment=comment, content=con)
             rep.save()
-        return HttpResponseRedirect('/posts/'+str(comment.post_id))
+
+        return HttpResponseRedirect('/posts/' + str(comment.post_id))
 
 
 def delete_reply(request, repid):
     reply = Reply.objects.get(id=repid)
+
     comment = Comment.objects.get(id=reply.comment_name_id)
-    if(request.user == reply.user or request.user.is_staff):
+    if (request.user == reply.user or request.user.is_staff):
         reply.delete()
-    return HttpResponseRedirect('/posts/'+str(comment.post_id))
+    return HttpResponseRedirect('/posts/' + str(comment.post_id))
 
 
 def add_tag(request):
@@ -109,7 +111,7 @@ def add_tag(request):
         newTag = con.split(" ")
         flag = 1
         for ourTag in newTag:
-            if(re.match(tagPtrn, ourTag)):
+            if (re.match(tagPtrn, ourTag)):
                 allTags = Tag.objects.all()
                 for eachTag in allTags:
                     if(eachTag.name == ourTag):
@@ -183,7 +185,7 @@ def get_like_data(request):
     refresh = request.GET['refreshx']
     reaction, created = Reaction.objects.get_or_create(
         post_id=postId, user_id=userId)
-    if(refresh == '0'):
+    if (refresh == '0'):
         reaction.react = reactState
         reaction.save()
     else:
@@ -247,7 +249,7 @@ def add_post(request):
 
 def edit_post(request, post_id):
     post = Post.objects.get(id=post_id)
-    if(request.user == post.author or request.user.is_staff):
+    if (request.user == post.author or request.user.is_staff):
         if request.method == "POST":
             form = PostForm(request.POST, instance=post)
             if form.is_valid():
@@ -265,6 +267,6 @@ def edit_post(request, post_id):
 
 def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
-    if(request.user == post.author or request.user.is_staff):
+    if (request.user == post.author or request.user.is_staff):
         post.delete()
     return HttpResponseRedirect('/posts/')
