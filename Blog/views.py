@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Category, ForbiddenWord
-from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
+from posts.models import Post, Category, ForbiddenWord, Tag
+from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm, CreateTagForm
 
 
 def check_auth_user_staff(request):
@@ -318,6 +318,33 @@ def edit_post(request, id):
                 context = {'post_form': post_form}
                 return render(request, 'admin/posts/createPost.html', context)
         except Post.DoesNotExist:
-            return render(request, 'admin/posts/createPost.html', context)
+            return HttpResponseRedirect('dashboard/posts')
     else:
         return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def add_tag(request):
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            tag_form = CreateTagForm(request.POST)
+            if tag_form.is_valid():
+                tag_form.save()
+                return HttpResponseRedirect("/dashboard/tags")
+        else:
+            tag_form = CreateTagForm()
+            context = {'tag_form': tag_form}
+            return render(request, 'admin/tags/tag.html', context)
+    else:
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def tags(request):
+    if check_auth_user_staff(request):
+        tags = Tag.objects.all()
+        mainContentVar = "tags"
+        context = {'tags': tags, 'mainContentVar': mainContentVar}
+        return render(request, 'admin/tags/tags.html', context)
+    else:
+        return HttpResponseRedirect('')
