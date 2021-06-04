@@ -4,30 +4,33 @@
 
 {% block mainContent %}
 
-<div class="text-right">
-    <a href="new/" class="btn btn-info"><i class="fa fa-plus"></i>
-        <strong>Category</strong></a>
-</div>
+    <div class="text-right">
+        <a href="{% url 'dashboard.categories.new' %}" class="btn btn-outline-info"><i class="fa fa-plus"></i>
+            <strong>Category</strong></a>
+    </div>
 
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th></th>
-    </tr>
-    </thead>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th>Controls</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    {% for category in categories %}
-    <tr>
-        <td>{{category.name}}</td>
-        <td>
-            <a href="edit/{{category.id}}" class="btn btn-success"><i class="far fa-edit">Edit</i></a>
-            <a href="delete/{{category.id}}" class="btn btn-danger"><i class="far fa-trash-alt"> Delete</i></a>
-        </td>
-    </tr>
-    {%endfor%}
-    </tbody>
-</table>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>
+                    <a href="{% url 'dashboard.categories.edit' category.id %}" class="btn btn-outline-success"><i
+                            class="far fa-edit">Edit</i></a>
+                    <a href="{% url 'dashboard.categories.delete' category.id %}" class="btn btn-outline-danger"><i
+                            class="far fa-trash-alt">
+                        Delete</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
