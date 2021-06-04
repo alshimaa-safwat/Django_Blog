@@ -381,7 +381,7 @@ def add_tag(request):
         else:
             tag_form = CreateTagForm()
             context = {'tag_form': tag_form}
-            return render(request, 'admin/tags/tag.html', context)
+            return render(request, 'admin/tags/createTag.html', context)
     else:
         return HttpResponseRedirect('/')
 
