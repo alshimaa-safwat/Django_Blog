@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    url(r'^subscribe$', views.getSubscribeData),
+    url(r'^subscribe$', views.get_subscribe_data),
      path('<postid>/addcomment',views.add_comment),
     path('<comid>/addreply',views.add_reply),
     path('<comid>/deletecomment',views.delete_comment),
