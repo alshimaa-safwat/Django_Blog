@@ -17,7 +17,7 @@ def get_subscribe_data(request):
     sub = []
     if refresh == '1':
         subscribes = Subscribe
-        for x in subscribes.objects.filter(user_name_id=userId):
+        for x in subscribes.objects.filter(user_id=userId):
             if x.user.id == userId:
                 cat.append(x.Category.id)
             else:
@@ -91,7 +91,7 @@ def add_reply(request, comid):
                 con = con.replace(word.word, rep)
             rep = Reply(user=uname, comment=comment, content=con)
             rep.save()
-        return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
+        return HttpResponseRedirect('/posts/'+str(comment.post_id))
 
 
 def delete_reply(request, repid):
@@ -99,7 +99,7 @@ def delete_reply(request, repid):
     comment = Comment.objects.get(id=reply.comment_name_id)
     if(request.user == reply.user or request.user.is_staff):
         reply.delete()
-    return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
+    return HttpResponseRedirect('/posts/'+str(comment.post_id))
 
 
 def add_tag(request):
@@ -112,19 +112,19 @@ def add_tag(request):
             if(re.match(tagPtrn, ourTag)):
                 allTags = Tag.objects.all()
                 for eachTag in allTags:
-                    if(eachTag.tag_name == ourTag):
+                    if(eachTag.name == ourTag):
                         flag = 0
                     else:
                         continue
                 if flag == 1:
-                    ta = Tag(tag=ourTag)
+                    ta = Tag(name=ourTag)
                     ta.save()
     return HttpResponseRedirect('/posts/newPost')
 
 
 def list_tags(request, tagid):
     tag = Tag.objects.get(id=tagid)
-    posts = Post.objects.filter(tag=tag)
+    posts = Post.objects.filter(name=tag)
     cats = Category.objects.all()
     context = {'posts': posts, 'cats': cats}
     return render(request, 'posts/index.html', context)
@@ -205,7 +205,7 @@ def home_page(request):
     page = paginator.page(page_number)
     for post in posts:
         dislikes = Reaction.objects.filter(
-            react="dislike", post_name=post.id).count()
+            react="dislike", post=post.id).count()
         if dislikes == 10:
             post.delete()
     categories = Category.objects.all()
@@ -236,6 +236,7 @@ def add_post(request):
             new_post.author = request.user
             new_post.thumbnail = request.FILES.get('thumbnail')
             new_post.save()
+            new_post.tags.add(request.POST.get('tags'))
             return HttpResponseRedirect('/posts/')
     else:
         post = PostForm()

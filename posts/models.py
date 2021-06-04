@@ -24,7 +24,7 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    thumbnail = models.ImageField(default='default.png', blank=True)
+    thumbnail = models.ImageField(default='default.png', upload_to="posts")
     tags = models.ManyToManyField(Tag, db_table="PostTags")
 
     def __str__(self):
