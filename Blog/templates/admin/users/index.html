@@ -26,7 +26,11 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
+<<<<<<< HEAD
                 {% if user.is_superuser %}
+=======
+                {% if user.is_staff %}
+>>>>>>> master
                     <td>
                         <a href="{% url 'dashboard.users.downgrade' user.id %}" class="btn btn-info">Make User</a>
                     </td>

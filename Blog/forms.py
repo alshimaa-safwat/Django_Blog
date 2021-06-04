@@ -30,6 +30,7 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'body', 'author', 'tags', 'thumbnail', 'category')
+
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.TextInput(attrs={'class': 'form-control'}),
@@ -37,7 +38,6 @@ class CreatePostForm(forms.ModelForm):
             'thumbnail': forms.FileInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
             'tags': forms.Select(attrs={'class': 'form-control'}),
-
         }
 
 
@@ -48,7 +48,6 @@ class CreateBadWordForm(forms.ModelForm):
         widgets = {
             'word': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
 
 
 class CreateTagForm(forms.ModelForm):

@@ -29,6 +29,6 @@ urlpatterns = [
     path('words/new', views.add_word, name='dashboard.words.new'),
 
     path('tags/', views.tags, name='dashboard.tags.index'),
-    path('tag/new', views.add_tag , name='dashboard.tags.new'),
+    path('tag/new', views.add_tag, name='dashboard.tags.new'),
 
 ]
