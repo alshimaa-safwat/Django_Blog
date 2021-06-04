@@ -27,11 +27,9 @@ urlpatterns = [
     path('words/<id>/edit', views.edit_word, name='dashboard.words.edit'),
     path('words/<id>/delete', views.delete_word, name='dashboard.words.delete'),
     path('words/new', views.add_word, name='dashboard.words.new'),
-<<<<<<< HEAD
-=======
 
     path('tags/', views.tags, name='dashboard.tags.index'),
     path('tag/new', views.add_tag , name='dashboard.tags.new'),
-
->>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
+    path('tags/<id>/edit', views.edit_tag, name='dashboard.tags.edit'),
+    path('tags/<id>/delete', views.delete_tag, name='dashboard.tags.delete'),
 ]

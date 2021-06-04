@@ -1,10 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-<<<<<<< HEAD
-from posts.models import Category, Post, ForbiddenWord
-=======
 from posts.models import Category, Post, ForbiddenWord, Tag
->>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
 
 
 # new user form
@@ -33,23 +29,14 @@ class CreateCategoryForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-<<<<<<< HEAD
         fields = ('title', 'body', 'author', 'thumbnail', 'category','tags')
-=======
-        fields = ('title', 'body', 'author', 'tags', 'thumbnail', 'category')
->>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'thumbnail': forms.FileInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
-<<<<<<< HEAD
             'tags':forms.Select(attrs={'class': 'form-control'})
-=======
-            'tags': forms.Select(attrs={'class': 'form-control'}),
-
->>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
         }
 
 
@@ -60,8 +47,6 @@ class CreateBadWordForm(forms.ModelForm):
         widgets = {
             'word': forms.TextInput(attrs={'class': 'form-control'}),
         }
-<<<<<<< HEAD
-=======
 
 
 
@@ -72,4 +57,3 @@ class CreateTagForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
->>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d

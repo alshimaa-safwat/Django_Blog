@@ -6,7 +6,7 @@
 
     <div class="text-right">
         <a href="{% url 'dashboard.tags.new' %}" class="btn btn-outline-info"><i class="fa fa-plus"></i>
-            <strong>Name</strong></a>
+            <strong>Tag</strong></a>
     </div>
     <table class="table table-hover">
         <thead>
@@ -20,9 +20,9 @@
             <tr>
                 <td>{{ tag.name }}</td>
                 <td>
-                    <a class="btn btn-outline-warning"><i
+                    <a href="{% url 'dashboard.tags.edit' tag.id %}" class="btn btn-outline-warning"><i
                             class="far fa-edit"></i></a>
-                    <a  class="btn btn-outline-danger"><i
+                    <a href="{% url 'dashboard.tags.delete' tag.id %}" class="btn btn-outline-danger"><i
                             class="far fa-trash-alt"></i></a>
                 </td>
             </tr>
