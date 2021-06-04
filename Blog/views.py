@@ -5,19 +5,6 @@ from posts.models import Post, Category, ForbiddenWord
 from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
 
 
-def edit_post(request, post_id):
-    post_form = Post.objects.get(id=post_id)
-    if request.method == "POST":
-        post_form = CreatePostForm(request.POST, instance=post_form)
-        if post_form.is_valid():
-            post_form.save()
-            return HttpResponseRedirect("/dashboard/categories")
-    else:
-        post_form = CreatePostForm(instance=post_form)
-        context = {'post_form': post_form}
-        return render(request, 'admin/posts/createPost.html', context)
-
-
 def words(request):
     word = ForbiddenWord.objects.all()
     mainContentVar = "Forbidden Words"
@@ -185,8 +172,8 @@ def get_posts(request):
     return render(request, 'admin/posts/postsList.html', context)
 
 
-def delete_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+def delete_post(request, id):
+    post = Post.objects.get(id=id)
     post.delete()
     return HttpResponseRedirect("/dashboard/posts")
 
@@ -199,5 +186,18 @@ def add_post(request):
             return HttpResponseRedirect("/dashboard/posts")
     else:
         post_form = CreatePostForm()
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)
+
+
+def edit_post(request, id):
+    post_form = Post.objects.get(id=id)
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST, instance=post_form)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/posts")
+    else:
+        post_form = CreatePostForm(instance=post_form)
         context = {'post_form': post_form}
         return render(request, 'admin/posts/createPost.html', context)

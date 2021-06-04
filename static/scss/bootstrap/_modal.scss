@@ -1,7 +1,7 @@
 // .modal-open      - body class for killing the scroll
 // .modal           - container to scroll within
 // .modal-dialog    - positioning shell for the actual modal
-// .modal-includes   - actual modal w/ bg and corners and stuff
+// .modal-content   - actual modal w/ bg and corners and stuff
 
 
 .modal-open {
@@ -68,7 +68,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%; // Ensure `.modal-includes` extends the full width of the parent `.modal-dialog`
+  width: 100%; // Ensure `.modal-content` extends the full width of the parent `.modal-dialog`
   // counteract the pointer-events: none; in the .modal-dialog
   pointer-events: auto;
   background-color: $modal-content-bg;
@@ -119,7 +119,7 @@
 }
 
 // Modal body
-// Where all modal includes resides (sibling of .modal-header and .modal-footer)
+// Where all modal content resides (sibling of .modal-header and .modal-footer)
 .modal-body {
   position: relative;
   // Enable `flex-grow: 1` so that the body take up as much space as possible

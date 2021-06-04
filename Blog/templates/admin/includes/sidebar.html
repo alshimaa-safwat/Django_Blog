@@ -23,15 +23,6 @@
             <div class="info">
                 <a href="" class="d-block"><strong>{{ user.email }}</strong></a>
             </div>
-            <br>
-            <div class="info">
-                {% if user.has_usable_password %}
-                    {#                    <!--                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>-->#}
-                    {#                    <a href="../changePass/{{ user.username }}">{% trans 'Change password' %}</a>#}
-
-                {% endif %}
-            </div>
-            <br>
             <div class="info">
                 <a href="/logout">Logout</a>
             </div>
@@ -48,33 +39,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/dashboard/posts/" class="nav-link">
+                    <a href="{% url 'dashboard.posts.index' %}" class="nav-link">
                         <i class="fas fa-mail-bulk mr-2"></i>
-                        <p>
-                            Posts
-                        </p>
+                        <p>Posts</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/dashboard/categories/" class="nav-link">
+                    <a href="{% url 'dashboard.categories.index' %}" class="nav-link">
                         <i class="fas fa-tag mr-2"></i>
-                        <p>
-                            Categories
-                        </p>
+                        <p>Categories</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/dashboard/words/" class="nav-link">
+                    <a href="{% url 'dashboard.words.index' %}" class="nav-link">
                         <i class="fas fa-align-center mr-2"></i>
-                        <p>
-                            Forbidden Words
-                        </p>
+                        <p>Forbidden Words</p>
                     </a>
                 </li>
-
-                <!-- /.sidebar-menu -->
+            </ul>
+        </nav>
     </div>
-    <!-- /.sidebar -->
 </aside>
 
     
