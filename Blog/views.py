@@ -1,10 +1,29 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
+<<<<<<< HEAD
 from posts.models import Post, Category, ForbiddenWord
 from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
 
 
+=======
+from posts.models import Post, Category, ForbiddenWord, Tag
+from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm, CreateTagForm
+
+
+def edit_post(request, post_id):
+    post_form = Post.objects.get(id=post_id)
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST, instance=post_form)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/categories")
+    else:
+        post_form = CreatePostForm(instance=post_form)
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)
+
+>>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
 def words(request):
     word = ForbiddenWord.objects.all()
     mainContentVar = "Forbidden Words"
@@ -30,6 +49,29 @@ def add_word(request):
         return render(request, 'admin/words/createBadWord.html', context)
 
 
+<<<<<<< HEAD
+=======
+
+def add_tag(request):
+    if request.method == "POST":
+        tag_form = CreateTagForm(request.POST)
+        if tag_form.is_valid():
+            tag_form.save()
+            return HttpResponseRedirect("/dashboard/tags")
+    else:
+        tag_form = CreateTagForm()
+        context = {'tag_form': tag_form}
+        return render(request, 'admin/tags/tag.html', context)
+
+
+def tags(request):
+    tags = Tag.objects.all()
+    mainContentVar = "tags"
+    context = {'tags': tags, 'mainContentVar': mainContentVar}
+    return render(request, 'admin/tags/tags.html', context)
+
+
+>>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
 def edit_word(request, id):
     word = ForbiddenWord.objects.get(id=id)
     if request.method == "POST":
