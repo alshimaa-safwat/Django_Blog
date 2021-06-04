@@ -29,13 +29,14 @@ class CreateCategoryForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'body', 'author', 'thumbnail', 'category')
+        fields = ('title', 'body', 'author', 'thumbnail', 'category','tags')
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'thumbnail': forms.FileInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
+            'tags':forms.Select(attrs={'class': 'form-control'})
         }
 
 
