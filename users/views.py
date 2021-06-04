@@ -16,9 +16,3 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-
-# @login_required
-# def home(request):
-#     return HttpResponseRedirect(
-#                reverse(NAME_OF_PROFILE_VIEW, 
-#                        args=[request.user.username]))
