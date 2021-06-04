@@ -49,7 +49,6 @@ class CreateBadWordForm(forms.ModelForm):
         }
 
 
-
 class CreateTagForm(forms.ModelForm):
     class Meta:
         model = Tag

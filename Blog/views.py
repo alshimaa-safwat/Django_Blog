@@ -5,31 +5,29 @@ from posts.models import Post, Category, ForbiddenWord, Tag
 from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm, CreateTagForm
 
 
+def check_auth_user_staff(request):
+    return request.user.is_staff
 
 
+@login_required(login_url="/login")
 def words(request):
-    word = ForbiddenWord.objects.all()
-    mainContentVar = "Forbidden Words"
-    context = {'word': word, 'mainContentVar': mainContentVar}
-    return render(request, 'admin/words/wordsForbidden.html', context)
-
-
-def delete_word(request, id):
-    word = ForbiddenWord.objects.get(id=id)
-    word.delete()
-    return HttpResponseRedirect("/dashboard/words")
-
-
-def add_word(request):
-    if request.method == "POST":
-        bad_word_form = CreateBadWordForm(request.POST)
-        if bad_word_form.is_valid():
-            bad_word_form.save()
-            return HttpResponseRedirect("/dashboard/words")
+    if check_auth_user_staff(request):
+        word = ForbiddenWord.objects.all()
+        mainContentVar = "Forbidden Words"
+        context = {'word': word, 'mainContentVar': mainContentVar}
+        return render(request, 'admin/words/wordsForbidden.html', context)
     else:
-        bad_word_form = CreateBadWordForm()
-        context = {'badWord_form': bad_word_form}
-        return render(request, 'admin/words/createBadWord.html', context)
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def delete_word(request, id):
+    if check_auth_user_staff(request):
+        word = ForbiddenWord.objects.get(id=id)
+        word.delete()
+        return HttpResponseRedirect("/dashboard/words")
+    else:
+        return HttpResponseRedirect('/')
 
 
 def add_tag(request):
@@ -70,174 +68,327 @@ def tags(request):
     return render(request, 'admin/tags/tags.html', context)
 
 
-def edit_word(request, id):
-    word = ForbiddenWord.objects.get(id=id)
-    if request.method == "POST":
-        bad_word_form = CreateBadWordForm(request.POST, instance=word)
-        if bad_word_form.is_valid():
-            bad_word_form.save()
-            return HttpResponseRedirect("/dashboard/words")
+@login_required(login_url="/login")
+def add_word(request):
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            bad_word_form = CreateBadWordForm(request.POST)
+            if bad_word_form.is_valid():
+                bad_word_form.save()
+                return HttpResponseRedirect("/dashboard/words")
+        else:
+            bad_word_form = CreateBadWordForm()
+            context = {'badWord_form': bad_word_form}
+            return render(request, 'admin/words/createBadWord.html', context)
     else:
-        bad_word_form = CreateBadWordForm(instance=word)
-        context = {'badWord_form': bad_word_form}
-        return render(request, 'admin/words/createBadWord.html', context)
+        return HttpResponseRedirect('/')
 
+
+@login_required(login_url="/login")
+def edit_word(request, id):
+    if check_auth_user_staff(request):
+        word = ForbiddenWord.objects.get(id=id)
+        if request.method == "POST":
+            bad_word_form = CreateBadWordForm(request.POST, instance=word)
+            if bad_word_form.is_valid():
+                bad_word_form.save()
+                return HttpResponseRedirect("/dashboard/words")
+        else:
+            bad_word_form = CreateBadWordForm(instance=word)
+            context = {'badWord_form': bad_word_form}
+            return render(request, 'admin/words/createBadWord.html', context)
+    else:
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
 def get_dashboard(request):
-    return render(request, 'admin/adminlte.html')
+    if check_auth_user_staff(request):
+        return render(request, 'admin/adminlte.html')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def get_users(request):
-    users = User.objects.all()
-    title = "Users"
-    context = {'title': title, 'users': users}
-    return render(request, 'admin/users/index.html', context)
+    if check_auth_user_staff(request):
+        users = User.objects.exclude(email=request.user.email).exclude(is_superuser=1)
+        main_content_var = "Users"
+        context = {'users': users, 'mainContentVar': main_content_var}
+        return render(request, 'admin/users/index.html', context)
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def create_user(request):
-    if request.method == "POST":
-        user_form = CreateUserForm(request.POST)
-        if user_form.is_valid():
-            user_form.save()
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            user_form = CreateUserForm(request.POST)
+            if user_form.is_valid():
+                user_form.save()
+                return HttpResponseRedirect("/dashboard/users")
+        else:
+            user_form = CreateUserForm()
+            context = {'user_form': user_form}
+            return render(request, 'admin/users/create_user.html', context)
+    else:
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def edit_user(request, id):
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            context = {'user': user}
+            return render(request, 'admin/users/edit_user.html', context)
+        except User.DoesNotExist:
             return HttpResponseRedirect("/dashboard/users")
     else:
-        user_form = CreateUserForm()
-        context = {'user_form': user_form}
-        return render(request, 'admin/users/create_user.html', context)
+        return HttpResponseRedirect('/')
 
 
-def edit_user(request, id):
-    user = User.objects.get(id=id)
-    context = {'user': user}
-    return render(request, 'admin/users/edit_user.html', context)
-
-
+@login_required(login_url="/login")
 def update_user(request, id):
-    if request.POST.get('cancel'):
-        return HttpResponseRedirect("/dashboard/users")
+    if check_auth_user_staff(request):
+        if request.POST.get('cancel'):
+            return HttpResponseRedirect("/dashboard/users")
+        else:
+            try:
+                user = User.objects.get(id=id)
+                user.first_name = request.POST.get('fname')
+                user.last_name = request.POST.get('lname')
+                user.username = request.POST.get('username')
+                user.email = request.POST.get('email')
+                user.save()
+                return HttpResponseRedirect("/dashboard/users")
+
+            except User.DoesNotExist:
+                return HttpResponseRedirect("/dashboard/users")
     else:
-        user = User.objects.get(id=id)
-        user.first_name = request.POST.get('fname')
-        user.last_name = request.POST.get('lname')
-        user.username = request.POST.get('username')
-        user.email = request.POST.get('email')
-        user.save()
-        return HttpResponseRedirect("/dashboard/users")
+        return HttpResponseRedirect("/")
 
 
+@login_required(login_url="/login")
 def delete_user(request, id):
-    try:
-        user = User.objects.get(id=id)
-        user.delete()
-        return HttpResponseRedirect("/dashboard/users")
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            user.delete()
+            return HttpResponseRedirect("/dashboard/users")
 
-    except User.DoesNotExist:
-        return HttpResponseRedirect("/dashboard/users")
+        except User.DoesNotExist:
+            return HttpResponseRedirect("/dashboard/users")
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def lock_user(request, id):
-    user = User.objects.get(id=id)
-    user.is_active = False
-    user.save()
-    return HttpResponseRedirect('/dashboard/users')
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            user.is_active = False
+            user.save()
+            return HttpResponseRedirect('/dashboard/users')
+        except User.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/users')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def unlock_user(request, id):
-    user = User.objects.get(id=id)
-    user.is_active = True
-    user.save()
-    return HttpResponseRedirect('/dashboard/users')
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            user.is_active = True
+            user.save()
+            return HttpResponseRedirect('/dashboard/users')
+        except User.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/users')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def upgrade_user(request, id):
-    user = User.objects.get(id=id)
-    user.is_staff = True
-    user.is_admin = True
-    user.is_superuser = True
-    user.save()
-    return HttpResponseRedirect("/dashboard/users")
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            user.is_staff = True
+            user.save()
+            return HttpResponseRedirect("/dashboard/users")
+        except User.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/users')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def downgrade_user(request, id):
-    user = User.objects.get(id=id)
-    user.is_staff = False
-    user.is_admin = False
-    user.is_superuser = False
-    user.save()
-    return HttpResponseRedirect("/dashboard/users")
+    if check_auth_user_staff(request):
+        try:
+            user = User.objects.get(id=id)
+            user.is_staff = False
+            user.save()
+            return HttpResponseRedirect("/dashboard/users")
+        except User.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/users')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def get_categories(request):
-    categories = Category.objects.all()
-    main_content_var = "Categories"
-    context = {'categories': categories, 'mainContentVar': main_content_var}
-    return render(request, 'admin/categories/categories.html', context)
+    if check_auth_user_staff(request):
+        categories = Category.objects.all()
+        main_content_var = "Categories"
+        context = {'categories': categories, 'mainContentVar': main_content_var}
+        return render(request, 'admin/categories/categories.html', context)
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def add_category(request):
-    if request.method == "POST":
-        category_form = CreateCategoryForm(request.POST)
-        if category_form.is_valid():
-            category_form.save()
-            return HttpResponseRedirect("/dashboard/categories")
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            category_form = CreateCategoryForm(request.POST)
+            if category_form.is_valid():
+                category_form.save()
+                return HttpResponseRedirect("/dashboard/categories")
+        else:
+            category_form = CreateCategoryForm()
+            context = {'category_form': category_form}
+            return render(request, 'admin/categories/createCategory.html', context)
     else:
-        category_form = CreateCategoryForm()
-        context = {'category_form': category_form}
-        return render(request, 'admin/categories/createCategory.html', context)
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def delete_category(request, id):
-    category = Category.objects.get(id=id)
-    category.delete()
-    return HttpResponseRedirect("/dashboard/categories")
+    if check_auth_user_staff(request):
+        try:
+            category = Category.objects.get(id=id)
+            category.delete()
+            return HttpResponseRedirect("/dashboard/categories")
+        except Category.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/categories')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def edit_category(request, id):
-    category = Category.objects.get(id=id)
-    if request.method == "POST":
-        category_form = CreateCategoryForm(request.POST, instance=category)
-        if category_form.is_valid():
-            category_form.save()
+    if check_auth_user_staff(request):
+        try:
+            category = Category.objects.get(id=id)
+            if request.method == "POST":
+                category_form = CreateCategoryForm(request.POST, instance=category)
+                if category_form.is_valid():
+                    category_form.save()
+                    return HttpResponseRedirect("/dashboard/categories")
+            else:
+                category_form = CreateCategoryForm(instance=category)
+                context = {'category_form': category_form}
+                return render(request, 'admin/categories/createCategory.html', context)
+        except Category.DoesNotExist:
             return HttpResponseRedirect("/dashboard/categories")
     else:
-        category_form = CreateCategoryForm(instance=category)
-        context = {'category_form': category_form}
-        return render(request, 'admin/categories/createCategory.html', context)
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def get_posts(request):
-    posts = Post.objects.all()
-    main_content_var = "Posts"
-    context = {'posts': posts, 'mainContentVar': main_content_var}
-    return render(request, 'admin/posts/postsList.html', context)
+    if check_auth_user_staff(request):
+        posts = Post.objects.all()
+        main_content_var = "Posts"
+        context = {'posts': posts, 'mainContentVar': main_content_var}
+        return render(request, 'admin/posts/postsList.html', context)
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def delete_post(request, id):
-    post = Post.objects.get(id=id)
-    post.delete()
-    return HttpResponseRedirect("/dashboard/posts")
+    if check_auth_user_staff(request):
+        try:
+            post = Post.objects.get(id=id)
+            post.delete()
+            return HttpResponseRedirect("/dashboard/posts")
+        except Post.DoesNotExist:
+            return HttpResponseRedirect('/dashboard/posts')
+    else:
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def add_post(request):
-    if request.method == "POST":
-        post_form = CreatePostForm(request.POST)
-        if post_form.is_valid():
-            post_form.save()
-            return HttpResponseRedirect("/dashboard/posts")
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            post_form = CreatePostForm(request.POST)
+            if post_form.is_valid():
+                post_form.save()
+                return HttpResponseRedirect("/dashboard/posts")
+        else:
+            post_form = CreatePostForm()
+            context = {'post_form': post_form}
+            return render(request, 'admin/posts/createPost.html', context)
     else:
-        post_form = CreatePostForm()
-        context = {'post_form': post_form}
-        return render(request, 'admin/posts/createPost.html', context)
+        return HttpResponseRedirect('/')
 
 
+@login_required(login_url="/login")
 def edit_post(request, id):
-    post_form = Post.objects.get(id=id)
-    if request.method == "POST":
-        post_form = CreatePostForm(request.POST, instance=post_form)
-        if post_form.is_valid():
-            post_form.save()
-            return HttpResponseRedirect("/dashboard/posts")
+    if check_auth_user_staff(request):
+        try:
+            post_form = Post.objects.get(id=id)
+            if request.method == "POST":
+                post_form = CreatePostForm(request.POST, instance=post_form)
+                if post_form.is_valid():
+                    post_form.save()
+                    return HttpResponseRedirect("/dashboard/posts")
+            else:
+                post_form = CreatePostForm(instance=post_form)
+                context = {'post_form': post_form}
+                return render(request, 'admin/posts/createPost.html', context)
+        except Post.DoesNotExist:
+            return HttpResponseRedirect('dashboard/posts')
     else:
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def add_tag(request):
+    if check_auth_user_staff(request):
+        if request.method == "POST":
+            tag_form = CreateTagForm(request.POST)
+            if tag_form.is_valid():
+                tag_form.save()
+                return HttpResponseRedirect("/dashboard/tags")
+        else:
+            tag_form = CreateTagForm()
+            context = {'tag_form': tag_form}
+            return render(request, 'admin/tags/tag.html', context)
+    else:
+        return HttpResponseRedirect('/')
+
+
+@login_required(login_url="/login")
+def tags(request):
+    if check_auth_user_staff(request):
+        tags = Tag.objects.all()
+        mainContentVar = "tags"
+        context = {'tags': tags, 'mainContentVar': mainContentVar}
+        return render(request, 'admin/tags/tags.html', context)
+    else:
+<<<<<<< HEAD
         post_form = CreatePostForm(instance=post_form)
         context = {'post_form': post_form}
         return render(request, 'admin/posts/createPost.html', context)
 
+=======
+        return HttpResponseRedirect('')
+>>>>>>> a0f5b3d67ac1111b698f64443ef183543ed16edd
