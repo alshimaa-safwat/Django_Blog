@@ -8,7 +8,7 @@
     <thead>
     <tr>
         <th scope="col">Word</th>
-        <th><a href="addWord/" class="btn btn-info"><i class="fa fa-plus"></i> <strong>Word</strong></a>
+        <th><a href="{% url 'dashboard.words.new' %}" class="btn btn-info"><i class="fa fa-plus"></i> <strong>Word</strong></a>
         </th>
     </tr>
     </thead>
@@ -18,8 +18,8 @@
     <tr>
         <td>{{word.word}}</td>
         <td>
-            <a href="editWord/{{word.id}}" class="btn btn-success"><i class="far fa-edit"></i></a>
-            <a href="deleteWord/{{word.id}}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+            <a href="{% url 'dashboard.words.edit' word.id %}" class="btn btn-success"><i class="far fa-edit"></i></a>
+            <a href="{% url 'dashboard.words.delete' word.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
         </td>
     </tr>
     {%endfor%}

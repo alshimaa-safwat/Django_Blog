@@ -4,13 +4,10 @@
 {% load i18n static %}
 {% block mainContent %}
 
-
 <form method="post"> {%csrf_token%}
     {{badWord_form.as_p}}
-
     <button type="submit">Add Forbidden Word</button>
 
 </form>
-
 
 {%endblock%}
