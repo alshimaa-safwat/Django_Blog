@@ -1,0 +1,16 @@
+{%extends "admin/adminlte.html" %}
+
+{% load static %}
+{% load i18n static %}
+{% block mainContent %}
+
+<form method="post"> {%csrf_token%}
+    {{badWord_form.as_p}}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d5916f02edcddc095993b500944be1be3f6c06d
+    <button type="submit" class="btn btn-outline-success">Submit</button>
+</form>
+
+{%endblock%}
