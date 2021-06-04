@@ -2,7 +2,45 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from posts.models import Post, Category, ForbiddenWord
-from .forms import createCategoryForm, CreateUserForm, CreatePostForm
+from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
+
+
+def words(request):
+    word = ForbiddenWord.objects.all()
+    mainContentVar = "Forbidden Words"
+    context = {'word': word, 'mainContentVar': mainContentVar}
+    return render(request, 'admin/words/wordsForbidden.html', context)
+
+
+def delete_word(request, id):
+    word = ForbiddenWord.objects.get(id=id)
+    word.delete()
+    return HttpResponseRedirect("/dashboard/words")
+
+
+def add_word(request):
+    if request.method == "POST":
+        bad_word_form = CreateBadWordForm(request.POST)
+        if bad_word_form.is_valid():
+            bad_word_form.save()
+            return HttpResponseRedirect("/dashboard/words")
+    else:
+        bad_word_form = CreateBadWordForm()
+        context = {'badWord_form': bad_word_form}
+        return render(request, 'admin/words/createBadWord.html', context)
+
+
+def edit_word(request, id):
+    word = ForbiddenWord.objects.get(id=id)
+    if request.method == "POST":
+        bad_word_form = CreateBadWordForm(request.POST, instance=word)
+        if bad_word_form.is_valid():
+            bad_word_form.save()
+            return HttpResponseRedirect("/dashboard/words")
+    else:
+        bad_word_form = CreateBadWordForm(instance=word)
+        context = {'badWord_form': bad_word_form}
+        return render(request, 'admin/words/createBadWord.html', context)
 
 
 def get_dashboard(request):
@@ -98,12 +136,12 @@ def get_categories(request):
 
 def add_category(request):
     if request.method == "POST":
-        category_form = createCategoryForm(request.POST)
+        category_form = CreateCategoryForm(request.POST)
         if category_form.is_valid():
             category_form.save()
             return HttpResponseRedirect("/dashboard/categories")
     else:
-        category_form = createCategoryForm()
+        category_form = CreateCategoryForm()
         context = {'category_form': category_form}
         return render(request, 'admin/categories/createCategory.html', context)
 
@@ -117,12 +155,12 @@ def delete_category(request, id):
 def edit_category(request, id):
     category = Category.objects.get(id=id)
     if request.method == "POST":
-        category_form = createCategoryForm(request.POST, instance=category)
+        category_form = CreateCategoryForm(request.POST, instance=category)
         if category_form.is_valid():
             category_form.save()
             return HttpResponseRedirect("/dashboard/categories")
     else:
-        category_form = createCategoryForm(instance=category)
+        category_form = CreateCategoryForm(instance=category)
         context = {'category_form': category_form}
         return render(request, 'admin/categories/createCategory.html', context)
 
@@ -134,8 +172,8 @@ def get_posts(request):
     return render(request, 'admin/posts/postsList.html', context)
 
 
-def delete_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+def delete_post(request, id):
+    post = Post.objects.get(id=id)
     post.delete()
     return HttpResponseRedirect("/dashboard/posts")
 
@@ -148,5 +186,18 @@ def add_post(request):
             return HttpResponseRedirect("/dashboard/posts")
     else:
         post_form = CreatePostForm()
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)
+
+
+def edit_post(request, id):
+    post_form = Post.objects.get(id=id)
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST, instance=post_form)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/posts")
+    else:
+        post_form = CreatePostForm(instance=post_form)
         context = {'post_form': post_form}
         return render(request, 'admin/posts/createPost.html', context)

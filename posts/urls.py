@@ -15,9 +15,9 @@ urlpatterns = [
     path('listcat/<catid>', views.list_cat),
     url(r'^like$', views.get_like_data),
     # posts
-    url(r'^$', views.homePage),
-    url(r'^(?P<postid>[\w]+)/$', views.display_post),
+    url(r'^(?P<post_id>[\w]+)/$', views.display_post),
     url('new', views.add_post),
-    path('editpost/<postid>', views.edit_post),
-    path('deletepost/<postid>', views.delete_post),
+    path('editpost/<post_id>', views.edit_post),
+    path('deletepost/<post_id>', views.delete_post),
+    path ('index',views.home_page)
 ]
