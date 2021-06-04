@@ -41,7 +41,7 @@ def get_subscribe_data(request):
 	return HttpResponse(json.dumps({'categoryNum':cat}))
 
 
-def add_Comment(request,postid): #the worst function i had done shitty code i know 
+def add_comment(request,postid): #the worst function i had done shitty code i know 
 	if request.method=="POST":
 		post= Post.objects.get(id=postid)
 		uname = request.user # we have to replace it with auth user 
