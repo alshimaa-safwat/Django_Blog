@@ -119,18 +119,18 @@
                             </div>
                             {% endif %}
                             
-                            {% if d.rep %}
+                            {% if d.replies %}
                             <ul class="children">
-                                {%for r in d.rep%}
+                                {%for r in d.replies%}
                                 <li class="comment">
                                     <div class="vcard">
                                         <img src="{% static 'images/avatar.jpg' %}" alt="Image placeholder">
                                     </div>
                                     <div class="comment-body">
-                                        <h3>{{r.user_name}}</h3>
+                                        <h3>{{r.user}}</h3>
 
                                         <div class="meta"><small>{{r.date|naturaltime}}</small></div>
-                                        {%if request.user == r.user_name or request.user.is_staff %}
+                                        {%if request.user == r.user or request.user.is_staff %}
                                             <div class="dropdown replyd">
                                               <button class="btn btn-link btn-lg text-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                               </button>
