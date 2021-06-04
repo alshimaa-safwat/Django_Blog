@@ -1,0 +1,34 @@
+{% extends "admin/adminlte.html" %}
+
+{% load static %}
+{% load i18n static %}
+{% block mainContent %}
+
+    <div class="text-right">
+        <a href="{% url 'dashboard.tags.new' %}" class="btn btn-outline-info"><i class="fa fa-plus"></i>
+            <strong>Name</strong></a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">name</th>
+            <th scope="col">Controls</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td>
+                    <a class="btn btn-outline-warning"><i
+                            class="far fa-edit"></i></a>
+                    <a  class="btn btn-outline-danger"><i
+                            class="far fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
