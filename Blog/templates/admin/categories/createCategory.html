@@ -7,7 +7,7 @@
     <form method="post">
         {% csrf_token %}
         {{ category_form.as_p }}
-        <button type="submit">Add Category</button>
+        <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>
 
 {% endblock %}

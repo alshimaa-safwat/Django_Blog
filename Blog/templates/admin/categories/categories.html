@@ -5,7 +5,7 @@
 {% block mainContent %}
 
     <div class="text-right">
-        <a href="{% url 'dashboard.categories.new' %}" class="btn btn-info"><i class="fa fa-plus"></i>
+        <a href="{% url 'dashboard.categories.new' %}" class="btn btn-outline-info"><i class="fa fa-plus"></i>
             <strong>Category</strong></a>
     </div>
 
@@ -13,7 +13,7 @@
         <thead>
         <tr>
             <th scope="col">Name</th>
-            <th></th>
+            <th>Controls</th>
         </tr>
         </thead>
 
@@ -22,9 +22,9 @@
             <tr>
                 <td>{{ category.name }}</td>
                 <td>
-                    <a href="{% url 'dashboard.categories.edit' category.id %}" class="btn btn-success"><i
+                    <a href="{% url 'dashboard.categories.edit' category.id %}" class="btn btn-outline-success"><i
                             class="far fa-edit">Edit</i></a>
-                    <a href="{% url 'dashboard.categories.delete' category.id %}" class="btn btn-danger"><i
+                    <a href="{% url 'dashboard.categories.delete' category.id %}" class="btn btn-outline-danger"><i
                             class="far fa-trash-alt">
                         Delete</i></a>
                 </td>

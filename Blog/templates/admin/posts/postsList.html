@@ -4,7 +4,7 @@
 {% block mainContent %}
 
     <div class="text-right">
-        <a href="{% url 'dashboard.posts.new' %}" class="btn btn-info">
+        <a href="{% url 'dashboard.posts.new' %}" class="btn btn-outline-info">
             <i class="fa fa-plus"></i> <strong>Post</strong>
         </a>
     </div>
@@ -17,9 +17,8 @@
             <th scope="col">Date</th>
             <th scope="col">Category</th>
             <th scope="col">Author</th>
-            <th scope="col">Thumbnail</th>
             <th scope="col">Tag</th>
-            <th></th>
+            <th>Controls</th>
         </tr>
         </thead>
 
@@ -31,11 +30,12 @@
                 <td>{{ post.date }}</td>
                 <td>{{ post.category }}</td>
                 <td>{{ post.author }}</td>
-                <td>{{ post.thumbnail }}</td>
                 <td>{{ post.category }}</td>
                 <td>
-                    <a href="{% url 'dashboard.posts.edit' post.id %}" class="btn btn-success"><i class="far fa-edit"></i></a>
-                    <a href="{% url 'dashboard.posts.delete' post.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                    <a href="{% url 'dashboard.posts.edit' post.id %}" class="btn btn-outline-warning"><i
+                            class="far fa-edit"></i></a>
+                    <a href="{% url 'dashboard.posts.delete' post.id %}" class="btn btn-outline-danger"><i
+                            class="far fa-trash-alt"></i></a>
                 </td>
             </tr>
         {% endfor %}

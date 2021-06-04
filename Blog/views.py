@@ -5,19 +5,6 @@ from posts.models import Post, Category, ForbiddenWord
 from .forms import CreateCategoryForm, CreateUserForm, CreatePostForm, CreateBadWordForm
 
 
-def edit_post(request, id):
-    post_form = Post.objects.get(id=id)
-    if request.method == "POST":
-        post_form = CreatePostForm(request.POST, instance=post_form)
-        if post_form.is_valid():
-            post_form.save()
-            return HttpResponseRedirect("/dashboard/posts")
-    else:
-        post_form = CreatePostForm(instance=post_form)
-        context = {'post_form': post_form}
-        return render(request, 'admin/posts/createPost.html', context)
-
-
 def words(request):
     word = ForbiddenWord.objects.all()
     mainContentVar = "Forbidden Words"
@@ -199,5 +186,18 @@ def add_post(request):
             return HttpResponseRedirect("/dashboard/posts")
     else:
         post_form = CreatePostForm()
+        context = {'post_form': post_form}
+        return render(request, 'admin/posts/createPost.html', context)
+
+
+def edit_post(request, id):
+    post_form = Post.objects.get(id=id)
+    if request.method == "POST":
+        post_form = CreatePostForm(request.POST, instance=post_form)
+        if post_form.is_valid():
+            post_form.save()
+            return HttpResponseRedirect("/dashboard/posts")
+    else:
+        post_form = CreatePostForm(instance=post_form)
         context = {'post_form': post_form}
         return render(request, 'admin/posts/createPost.html', context)
