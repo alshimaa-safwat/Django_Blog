@@ -35,7 +35,7 @@ def get_subscribe_data(request):
                     ' use this url to visit this category http://127.0.0.1:8000/posts/listcat/' + \
                     str(cato.id)
                 recepient = user.email
-                send_mail(subject, message, 'osamaeltayar011100',
+                send_mail(subject, message, 'muhammedshendi@gmail.com',
                           [recepient], fail_silently=False)
             except Exception as e:
                 print(e)
