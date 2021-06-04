@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm,UserLoginForm
 
 
 def register(request):
@@ -16,3 +16,9 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
+
+# @login_required
+# def home(request):
+#     return HttpResponseRedirect(
+#                reverse(NAME_OF_PROFILE_VIEW, 
+#                        args=[request.user.username]))
