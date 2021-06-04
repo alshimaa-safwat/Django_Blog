@@ -87,7 +87,7 @@
                             <div class="comment-body">
                                 <h3>{{d.comment.user}}</h3>
                                 <div class="meta text-secondary "><small>{{d.comment.date|naturaltime}}</small></div>
-                                {%if request.user == d.comment.user_name or request.user.is_staff %}
+                                {%if request.user == d.comment.user or request.user.is_staff %}
                                     <div class="dropdown comment">
                                       <button class="btn btn-link btn-lg text-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       </button>

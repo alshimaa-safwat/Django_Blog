@@ -17,7 +17,7 @@ def get_subscribe_data(request):
     sub = []
     if refresh == '1':
         subscribes = Subscribe
-        for x in subscribes.objects.filter(user_name_id=userId):
+        for x in subscribes.objects.filter(user_id=userId):
             if x.user.id == userId:
                 cat.append(x.Category.id)
             else:
@@ -112,19 +112,19 @@ def add_tag(request):
             if(re.match(tagPtrn, ourTag)):
                 allTags = Tag.objects.all()
                 for eachTag in allTags:
-                    if(eachTag.tag_name == ourTag):
+                    if(eachTag.name == ourTag):
                         flag = 0
                     else:
                         continue
                 if flag == 1:
-                    ta = Tag(tag=ourTag)
+                    ta = Tag(name=ourTag)
                     ta.save()
     return HttpResponseRedirect('/posts/newPost')
 
 
 def list_tags(request, tagid):
     tag = Tag.objects.get(id=tagid)
-    posts = Post.objects.filter(tag=tag)
+    posts = Post.objects.filter(name=tag)
     cats = Category.objects.all()
     context = {'posts': posts, 'cats': cats}
     return render(request, 'posts/index.html', context)
@@ -236,6 +236,7 @@ def add_post(request):
             new_post.author = request.user
             new_post.thumbnail = request.FILES.get('thumbnail')
             new_post.save()
+            new_post.tags.add(request.POST.get('tags'))
             return HttpResponseRedirect('/posts/')
     else:
         post = PostForm()
