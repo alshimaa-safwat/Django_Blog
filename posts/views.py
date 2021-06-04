@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def getSubscribeData(request):
+def get_subscribe_data(request):
 	userId = request.user.id
 	catNum = request.GET['catNum']
 	refresh = request.GET['refresh']
@@ -32,7 +32,7 @@ def getSubscribeData(request):
 	return HttpResponse(json.dumps({'categoryNum':cat}))
 
 
-def addComment(request,postid): #the worst function i had done shitty code i know 
+def add_Comment(request,postid): #the worst function i had done shitty code i know 
 	if request.method=="POST":
 		post= Post.objects.get(id=postid)
 		uname = request.user # we have to replace it with auth user 
@@ -53,7 +53,7 @@ def addComment(request,postid): #the worst function i had done shitty code i kno
 		return HttpResponseRedirect('/posts/'+postid )
 
 
-def deletecomment(request,comid):
+def delete_comment(request,comid):
 	comment = Comments.objects.get(id=comid)
 	postid=comment.post_id
 	if(request.user==comment.user or request.user.is_staff):
@@ -62,7 +62,7 @@ def deletecomment(request,comid):
 
 
 
-def addReply(request,comid):
+def add_reply(request,comid):
 	if request.method =="POST":
 		comment = Comments.objects.get(id = comid)
 		uname = request.user
@@ -82,7 +82,7 @@ def addReply(request,comid):
 		return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
 
 
-def deletereply(request,repid):
+def delete_reply(request,repid):
 	reply =Reply.objects.get(id=repid)
 	comment=Comments.objects.get(id=reply.comment_name_id)
 	if(request.user==reply.user or request.user.is_staff):
@@ -90,7 +90,7 @@ def deletereply(request,repid):
 	return HttpResponseRedirect('/posts/'+str(comment.post_name_id))
 
 
-def addTag(request):
+def add_tag(request):
 	if request.method =="POST":
 		con=request.POST.get('othertag')
 		tagPtrn=r"^#[\S]+$"
@@ -110,7 +110,7 @@ def addTag(request):
 	return HttpResponseRedirect('/posts/newPost') 
 
 
-def listTags(request,tagid):
+def list_tags(request,tagid):
 	tag=Tags.objects.get(id=tagid)
 	posts=Post.objects.filter(tag=tag)
 	cats = Category.objects.all()
