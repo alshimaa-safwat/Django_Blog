@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-   <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css'%}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css'%}" /> -->
 
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 
@@ -47,7 +47,7 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="offset-2 col-md-8">
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }}">
@@ -57,7 +57,7 @@
           {% endif %}
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4"> -->
           <!-- <div class="content-section">
             <h3 style="color: rgb(91, 13, 13) ;font-size: 2.6em;line-height: 46px;">About <strong>ITI</strong></h3>
             
@@ -72,7 +72,7 @@
               </ul>
             </p>
           </div> -->
-        </div>
+        <!-- </div> -->
       </div>
     </main>
 
