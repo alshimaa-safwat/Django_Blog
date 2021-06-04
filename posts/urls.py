@@ -19,4 +19,5 @@ urlpatterns = [
     url('new', views.add_post),
     path('editpost/<post_id>', views.edit_post),
     path('deletepost/<post_id>', views.delete_post),
+    path ('index',views.home_page)
 ]

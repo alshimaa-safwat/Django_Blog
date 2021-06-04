@@ -11,6 +11,12 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username','first_name', 'last_name','email']
 
+class UserLoginForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
 
 class AuthFormCheckStatus(AuthenticationForm):
     error_messages = {

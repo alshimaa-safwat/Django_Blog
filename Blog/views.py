@@ -42,7 +42,6 @@ def edit_word(request, id):
         context = {'badWord_form': bad_word_form}
         return render(request, 'admin/words/createBadWord.html', context)
 
-
 def get_dashboard(request):
     return render(request, 'admin/adminlte.html')
 
