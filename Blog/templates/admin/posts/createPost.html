@@ -4,7 +4,7 @@
 {% load i18n static %}
 {% block mainContent %}
 
-    <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
         {{ post_form.as_p }}
         <button type="submit" class="btn btn-outline-success">Submit</button>
     </form>

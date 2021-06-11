@@ -331,14 +331,15 @@ def delete_post(request, id):
 def add_post(request):
     if check_auth_user_staff(request):
         if request.method == "POST":
-            post = CreatePostForm(request.POST, request.FILES)
+            post = CreatePostForm(request.POST, request.FILES, Post)
+            print(post.is_valid())
             if post.is_valid():
                 new_post = post.save(commit=False)
                 new_post.author = request.user
                 new_post.thumbnail = request.FILES.get('thumbnail')
                 new_post.save()
+                new_post.tags.add(request.POST.get('tags'))
                 return HttpResponseRedirect("/dashboard/posts")
-
         else:
             post_form = CreatePostForm()
             context = {'post_form': post_form}
@@ -346,11 +347,12 @@ def add_post(request):
     else:
         return HttpResponseRedirect('/')
 
+    return HttpResponseRedirect("/dashboard/posts")
+
 
 @login_required(login_url="/login")
 def edit_post(request, id):
     post = Post.objects.get(id=id)
-
     if check_auth_user_staff(request):
         try:
             if request.method == "POST":
@@ -358,12 +360,14 @@ def edit_post(request, id):
                 if post.is_valid():
                     new_post = post.save(commit=False)
                     new_post.author = request.user
-                    if(request.FILES.get('thumbnail') != None):
+                    if request.FILES.get('thumbnail') is not None:
                         new_post.thumbnail = request.FILES.get('thumbnail')
-                        new_post.save()
-                        return HttpResponseRedirect("/dashboard/posts")
+                    new_post.save()
+                    return HttpResponseRedirect("/dashboard/posts")
             else:
                 post_form = CreatePostForm(instance=post)
+                context = {"post_form" : post_form}
+                return render(request, 'admin/posts/createPost.html', context)
         except Post.DoesNotExist:
             return HttpResponseRedirect('dashboard/posts')
     else:

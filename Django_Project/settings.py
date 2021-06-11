@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'Django_Project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog',
-        'USER': 'django',
-        'PASSWORD': 'Password123#@!'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+        # 'USER': 'django',
+        # 'PASSWORD': 'Password123#@!'
     }
 }
 
